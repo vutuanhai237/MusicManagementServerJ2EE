@@ -14,20 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "Genre")
+@Table(name = "Singer")
 @Component
-public class Genre {
+public class Singer {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
 	private long id;
 	@Column(name = "NAME")
 	private String name;
+	@Column(name = "SEX")
+	private String sex;
+	@Column(name = "BIRTHDAY")
+	private String birthday;
 	@Autowired
-	@OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "singer", cascade = CascadeType.ALL)
 	private List<Music> musics;
 
-	public Genre() {
+	public Singer() {
 		this.name = "";
 	}
 
@@ -41,6 +45,22 @@ public class Genre {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 }

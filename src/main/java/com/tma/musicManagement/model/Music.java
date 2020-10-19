@@ -1,12 +1,11 @@
 package com.tma.musicManagement.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,30 @@ public class Music {
 	@Column(name = "RELEASE_TIME")
 	private String releaseTime;
 	@Autowired
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "genre_id", referencedColumnName = "id")
+	@ManyToOne
+	@JoinColumn(name = "genre_id")
 	private Genre genre;
+	@Autowired
+	@ManyToOne
+	@JoinColumn(name = "musican_id")
+	private Musician musician;
+	@Autowired
+	@ManyToOne
+	@JoinColumn(name = "singer_id")
+	private Singer singer;
+
+	@Autowired
+	public Singer getSinger() {
+		return this.singer;
+	}
+
+	public void setSinger(Singer singer) {
+		this.singer = singer;
+	}
+
+	public Music(Singer singer) {
+		this.setSinger(singer);
+	}
 
 	@Autowired
 	public Genre getGenre() {
@@ -41,6 +61,19 @@ public class Music {
 
 	public Music(Genre genre) {
 		this.setGenre(genre);
+	}
+
+	@Autowired
+	public Musician getMusican() {
+		return this.musician;
+	}
+
+	public void setMusican(Musician musician) {
+		this.musician = musician;
+	}
+
+	public Music(Musician musican) {
+		this.setMusican(musican);
 	}
 
 	public Music() {
