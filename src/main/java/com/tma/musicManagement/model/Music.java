@@ -30,7 +30,7 @@ public class Music {
 	private Genre genre;
 	@Autowired
 	@ManyToOne
-	@JoinColumn(name = "musican_id")
+	@JoinColumn(name = "musician_id")
 	private Musician musician;
 	@Autowired
 	@ManyToOne
@@ -64,16 +64,16 @@ public class Music {
 	}
 
 	@Autowired
-	public Musician getMusican() {
+	public Musician getMusician() {
 		return this.musician;
 	}
 
-	public void setMusican(Musician musician) {
+	public void setMusician(Musician musician) {
 		this.musician = musician;
 	}
 
-	public Music(Musician musican) {
-		this.setMusican(musican);
+	public Music(Musician musician) {
+		this.setMusician(musician);
 	}
 
 	public Music() {

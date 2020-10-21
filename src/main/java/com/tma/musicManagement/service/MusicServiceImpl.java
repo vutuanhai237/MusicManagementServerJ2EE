@@ -1,8 +1,12 @@
 package com.tma.musicManagement.service;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.repository.MusicRepository;
@@ -37,18 +41,23 @@ public class MusicServiceImpl implements MusicService {
 	}
 
 	@Override
-	public String createMusic(Music music) {
-		try {
-			if (MusicValidation.check(music) == Constant.valid) {
-				musicRepository.save(music);
-				return Constant.success;
-			} else {
-				return MusicValidation.check(music);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Constant.notSuccess;
-		}
+	public ResponseEntity<Object> createMusic(Music music) {
+//		try {
+//			if (MusicValidation.check(music) == Constant.valid) {
+//				musicRepository.save(music);
+//				return Constant.success;
+//			} else {
+//				return MusicValidation.check(music);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return Constant.notSuccess;
+//		}
+		Music savedMusic = musicRepository.save(music);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMusic.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).build();
 	}
 
 	@Override

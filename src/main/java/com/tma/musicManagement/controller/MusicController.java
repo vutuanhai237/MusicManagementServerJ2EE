@@ -1,6 +1,7 @@
 package com.tma.musicManagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.service.MusicService;
 
-@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 public class MusicController {
 
@@ -25,12 +26,12 @@ public class MusicController {
 	private MusicService musicService;
 
 	@GetMapping(path = "/musics")
-	public @ResponseBody Iterable<Music> readStudents() {
+	public @ResponseBody Iterable<Music> getMusics() {
 		return musicService.getMusics();
 	}
 
 	@PostMapping(path = "/musics")
-	public @ResponseBody String createStudents(@RequestBody Music music) {
+	public @ResponseBody ResponseEntity<Object> createMusic(@RequestBody Music music) {
 		return musicService.createMusic(music);
 	}
 

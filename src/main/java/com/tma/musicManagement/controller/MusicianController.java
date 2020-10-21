@@ -6,22 +6,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tma.musicManagement.model.Genre;
-import com.tma.musicManagement.service.GenreService;
+import com.tma.musicManagement.model.Musician;
+import com.tma.musicManagement.service.MusicianService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
-public class GenreController {
+public class MusicianController {
 
 	@Autowired
-	private Genre genre;
+	private Musician musician;
 
 	@Autowired
-	private GenreService genreService;
+	private MusicianService musicianService;
 
-	@GetMapping(path = "/genres")
-	public @ResponseBody Iterable<Genre> readStudents() {
-		return genreService.getGenres();
+	@GetMapping(path = "/musicians")
+	public @ResponseBody Iterable<Musician> getMusician() {
+		return musicianService.getMusicians();
 	}
 
 }

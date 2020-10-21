@@ -20,7 +20,7 @@ public class Musician {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
-	private long id;
+	private int id;
 	@Column(name = "NAME")
 	private String name;
 	@Column(name = "SEX")
@@ -63,4 +63,11 @@ public class Musician {
 		this.sex = sex;
 	}
 
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

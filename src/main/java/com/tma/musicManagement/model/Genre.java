@@ -20,7 +20,7 @@ public class Genre {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
-	private long id;
+	private int id;
 	@Column(name = "NAME")
 	private String name;
 	@Autowired
@@ -41,6 +41,14 @@ public class Genre {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }
