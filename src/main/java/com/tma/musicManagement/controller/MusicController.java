@@ -36,12 +36,12 @@ public class MusicController {
 	}
 
 	@PutMapping(path = "/musics")
-	public @ResponseBody String updateStudents(@RequestParam int id, @RequestBody Music music) {
+	public @ResponseBody ResponseEntity<Object> updateMusic(@RequestParam int id, @RequestBody Music music) {
 		return musicService.updateMusic(id, music);
 	}
 
 	@DeleteMapping(path = "/musics")
-	public @ResponseBody String deleteStudents(@RequestParam int id) {
+	public @ResponseBody String deleteMusic(@RequestParam int id) {
 		return musicService.deleteMusic(id);
 	}
 }

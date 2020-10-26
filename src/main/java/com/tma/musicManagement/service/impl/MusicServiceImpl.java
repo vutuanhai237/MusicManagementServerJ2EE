@@ -1,4 +1,4 @@
-package com.tma.musicManagement.service;
+package com.tma.musicManagement.service.impl;
 
 import java.net.URI;
 
@@ -10,8 +10,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.repository.MusicRepository;
+import com.tma.musicManagement.service.MusicService;
 import com.tma.musicManagement.utils.Constant;
-import com.tma.musicManagement.validation.MusicValidation;
 
 @Service
 @Primary
@@ -25,25 +25,10 @@ public class MusicServiceImpl implements MusicService {
 	}
 
 	@Override
-	public String updateMusic(int music_id, Music music) {
-		try {
-			if (MusicValidation.check(music) == Constant.valid) {
-				musicRepository.delete(music_id);
-				musicRepository.save(music);
-				return Constant.success;
-			} else {
-				return MusicValidation.check(music);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Constant.notSuccess;
-	}
-
-	@Override
-	public ResponseEntity<Object> createMusic(Music music) {
+	public ResponseEntity<Object> updateMusic(int id, Music music) {
 //		try {
 //			if (MusicValidation.check(music) == Constant.valid) {
+//				musicRepository.delete(music_id);
 //				musicRepository.save(music);
 //				return Constant.success;
 //			} else {
@@ -51,8 +36,20 @@ public class MusicServiceImpl implements MusicService {
 //			}
 //		} catch (Exception e) {
 //			e.printStackTrace();
-//			return Constant.notSuccess;
 //		}
+//		return Constant.notSuccess;
+		Music musicOptional = musicRepository.findOne(id);
+		if (musicOptional == null) {
+			System.out.print("1\n");
+			return ResponseEntity.notFound().build();
+		}
+		music.setId(id);
+		musicRepository.save(music);
+		return ResponseEntity.noContent().build();
+	}
+
+	@Override
+	public ResponseEntity<Object> createMusic(Music music) {
 		Music savedMusic = musicRepository.save(music);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMusic.getId())
 				.toUri();
@@ -64,10 +61,10 @@ public class MusicServiceImpl implements MusicService {
 	public String deleteMusic(int music_id) {
 		try {
 			musicRepository.delete(music_id);
-			return Constant.success;
+			return Constant.SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Constant.notSuccess;
+			return Constant.NOT_SUCCESS;
 		}
 
 	}

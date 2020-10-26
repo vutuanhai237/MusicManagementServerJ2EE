@@ -1,5 +1,6 @@
 package com.tma.musicManagement.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tma.musicManagement.model.Genre;
@@ -8,10 +9,9 @@ import com.tma.musicManagement.model.Genre;
 public interface GenreService {
 	public Iterable<Genre> getGenres();
 
-	public String updateGenre(Genre genre);
+	public ResponseEntity<Object> updateGenre(int id, Genre genre);
 
-	public String createGenre(Genre genre);
+	public ResponseEntity<Object> createGenre(Genre genre);
 
-	public String deleteGenre(int genre_id);
-
+	public String deleteGenre(int id);
 }

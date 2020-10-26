@@ -8,7 +8,7 @@ public class MusicValidation {
 		try {
 			return GenreValidation.check(music.getGenre());
 		} catch (Exception e) {
-			throw new Exception(Constant.genreNull);
+			throw new Exception(Constant.GENRE_NULL);
 		}
 	}
 }

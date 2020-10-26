@@ -9,9 +9,9 @@ import com.tma.musicManagement.model.Music;
 public interface MusicService {
 	public Iterable<Music> getMusics();
 
-	public String updateMusic(int music_id, Music music);
+	public ResponseEntity<Object> updateMusic(int id, Music music);
 
 	public ResponseEntity<Object> createMusic(Music music);
 
-	public String deleteMusic(int music_id);
+	public String deleteMusic(int id);
 }
