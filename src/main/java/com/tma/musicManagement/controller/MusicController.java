@@ -1,5 +1,7 @@
 package com.tma.musicManagement.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +26,21 @@ public class MusicController {
 
 	@Autowired
 	private MusicService musicService;
+
+	@GetMapping(path = "/genre_quantities")
+	public @ResponseBody List<?> getGenreQuantities() {
+		return musicService.getGenreQuantities();
+	}
+
+	@GetMapping(path = "/musician_quantities")
+	public @ResponseBody List<?> getMusicianQuantities() {
+		return musicService.getMusicianQuantities();
+	}
+
+	@GetMapping(path = "/singer_quantities")
+	public @ResponseBody List<?> getSingerQuantities() {
+		return musicService.getSingerQuantities();
+	}
 
 	@GetMapping(path = "/musics")
 	public @ResponseBody Iterable<Music> getMusics() {

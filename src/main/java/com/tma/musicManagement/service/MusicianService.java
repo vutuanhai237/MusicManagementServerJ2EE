@@ -1,5 +1,6 @@
 package com.tma.musicManagement.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tma.musicManagement.model.Musician;
@@ -8,9 +9,9 @@ import com.tma.musicManagement.model.Musician;
 public interface MusicianService {
 	public Iterable<Musician> getMusicians();
 
-	public String updateMusician(int musician_id, Musician musician);
+	public ResponseEntity<Object> updateMusician(int id, Musician musician);
 
-	public String createMusician(Musician musician);
+	public ResponseEntity<Object> createMusician(Musician musician);
 
-	public String deleteMusician(int musician_id);
+	public String deleteMusician(int id);
 }

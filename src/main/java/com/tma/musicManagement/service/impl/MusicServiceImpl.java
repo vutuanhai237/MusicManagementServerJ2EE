@@ -1,6 +1,7 @@
 package com.tma.musicManagement.service.impl;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -26,18 +27,6 @@ public class MusicServiceImpl implements MusicService {
 
 	@Override
 	public ResponseEntity<Object> updateMusic(int id, Music music) {
-//		try {
-//			if (MusicValidation.check(music) == Constant.valid) {
-//				musicRepository.delete(music_id);
-//				musicRepository.save(music);
-//				return Constant.success;
-//			} else {
-//				return MusicValidation.check(music);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return Constant.notSuccess;
 		Music musicOptional = musicRepository.findOne(id);
 		if (musicOptional == null) {
 			System.out.print("1\n");
@@ -67,6 +56,21 @@ public class MusicServiceImpl implements MusicService {
 			return Constant.NOT_SUCCESS;
 		}
 
+	}
+
+	@Override
+	public List<?> getGenreQuantities() {
+		return musicRepository.getGenreQuantities();
+	}
+
+	@Override
+	public List<?> getMusicianQuantities() {
+		return musicRepository.getMusicianQuantities();
+	}
+
+	@Override
+	public List<?> getSingerQuantities() {
+		return musicRepository.getSingerQuantities();
 	}
 
 }
