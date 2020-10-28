@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tma.musicManagement.utils.Constant;
+
 @Entity
 @Table(name = "Music")
 @Component
@@ -111,4 +113,11 @@ public class Music {
 		this.releaseTime = releaseTime;
 	}
 
+	public String check(Music music) throws Exception {
+		try {
+			return music.getGenre().check();
+		} catch (Exception e) {
+			throw new Exception(Constant.GENRE_NULL);
+		}
+	}
 }

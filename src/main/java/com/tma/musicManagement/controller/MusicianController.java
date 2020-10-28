@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.service.MusicianService;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin
 @RestController
 public class MusicianController {
 
