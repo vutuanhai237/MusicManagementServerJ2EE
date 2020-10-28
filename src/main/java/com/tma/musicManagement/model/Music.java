@@ -61,10 +61,6 @@ public class Music {
 		this.genre = genre;
 	}
 
-	public Music(Genre genre) {
-		this.setGenre(genre);
-	}
-
 	@Autowired
 	public Musician getMusician() {
 		return this.musician;
@@ -72,10 +68,6 @@ public class Music {
 
 	public void setMusician(Musician musician) {
 		this.musician = musician;
-	}
-
-	public Music(Musician musician) {
-		this.setMusician(musician);
 	}
 
 	public Music() {
@@ -113,11 +105,30 @@ public class Music {
 		this.releaseTime = releaseTime;
 	}
 
-	public String check(Music music) throws Exception {
+	public String check() throws Exception {
 		try {
-			return music.getGenre().check();
+			if (this.getGenre().check() == Constant.VALID) {
+
+			} else {
+				return this.getGenre().check();
+			}
 		} catch (Exception e) {
 			throw new Exception(Constant.GENRE_NULL);
+		}
+
+		try {
+			if (this.getMusician().check() == Constant.VALID) {
+
+			} else {
+				return this.getMusician().check();
+			}
+		} catch (Exception e) {
+			throw new Exception(Constant.MUSICIAN_NULL);
+		}
+		try {
+			return this.getSinger().check();
+		} catch (Exception e) {
+			throw new Exception(Constant.SINGER_NULL);
 		}
 	}
 }

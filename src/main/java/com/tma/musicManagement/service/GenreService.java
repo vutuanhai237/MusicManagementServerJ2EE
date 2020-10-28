@@ -13,5 +13,5 @@ public interface GenreService {
 
 	public ResponseEntity<Object> createGenre(Genre genre);
 
-	public String deleteGenre(int id);
+	public ResponseEntity<Object> deleteGenre(int id);
 }

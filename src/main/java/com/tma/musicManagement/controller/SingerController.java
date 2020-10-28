@@ -20,10 +20,11 @@ import com.tma.musicManagement.service.SingerService;
 public class SingerController {
 
 	@Autowired
-	private Singer singer;
-
-	@Autowired
 	private SingerService singerService;
+
+	public void setSingerService(SingerService singerService) {
+		this.singerService = singerService;
+	}
 
 	@GetMapping(path = "/singers")
 	public @ResponseBody Iterable<Singer> getSingers() {
@@ -41,7 +42,7 @@ public class SingerController {
 	}
 
 	@DeleteMapping(path = "/singers")
-	public @ResponseBody String deleteSinger(@RequestParam int id) {
+	public @ResponseBody ResponseEntity<Object> deleteSinger(@RequestParam int id) {
 		return singerService.deleteSinger(id);
 	}
 

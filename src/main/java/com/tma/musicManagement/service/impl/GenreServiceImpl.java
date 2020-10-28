@@ -1,23 +1,23 @@
 package com.tma.musicManagement.service.impl;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tma.musicManagement.model.Genre;
 import com.tma.musicManagement.repository.GenreRepository;
 import com.tma.musicManagement.service.GenreService;
-import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
 public class GenreServiceImpl implements GenreService {
 	@Autowired
 	private GenreRepository genreRepository;
+
+	public void setGenreRepository(GenreRepository genreRepository) {
+		this.genreRepository = genreRepository;
+	}
 
 	@Override
 	public Iterable<Genre> getGenres() {
@@ -36,24 +36,27 @@ public class GenreServiceImpl implements GenreService {
 		return ResponseEntity.noContent().build();
 	}
 
+//	public URI getLocation(Genre savedGenre) {
+//		return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedGenre.getId())
+//				.toUri();
+//	}
+
 	@Override
 	public ResponseEntity<Object> createGenre(Genre genre) {
-		Genre savedMusic = genreRepository.save(genre);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMusic.getId())
-				.toUri();
-
-		return ResponseEntity.created(location).build();
+		Genre savedGenre = genreRepository.save(genre);
+		// URI location = getLocation(savedGenre);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
-	public String deleteGenre(int genre_id) {
-		try {
-			genreRepository.delete(genre_id);
-			return Constant.SUCCESS;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Constant.NOT_SUCCESS;
+	public ResponseEntity<Object> deleteGenre(int id) {
+		Genre genreOptional = genreRepository.findOne(id);
+		if (genreOptional == null) {
+			return ResponseEntity.notFound().build();
 		}
+
+		genreRepository.delete(id);
+		return ResponseEntity.noContent().build();
 
 	}
 

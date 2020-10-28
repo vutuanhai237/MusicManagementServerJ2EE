@@ -20,10 +20,11 @@ import com.tma.musicManagement.service.GenreService;
 public class GenreController {
 
 	@Autowired
-	private Genre genre;
-
-	@Autowired
 	private GenreService genreService;
+
+	public void setGenreService(GenreService genreService) {
+		this.genreService = genreService;
+	}
 
 	@GetMapping(path = "/genres")
 	public @ResponseBody Iterable<Genre> getGenres() {
@@ -41,7 +42,7 @@ public class GenreController {
 	}
 
 	@DeleteMapping(path = "/genres")
-	public @ResponseBody String deleteGenre(@RequestParam int id) {
+	public @ResponseBody ResponseEntity<Object> deleteGenre(@RequestParam int id) {
 		return genreService.deleteGenre(id);
 	}
 

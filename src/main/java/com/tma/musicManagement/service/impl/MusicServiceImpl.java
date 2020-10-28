@@ -1,24 +1,25 @@
 package com.tma.musicManagement.service.impl;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.repository.MusicRepository;
 import com.tma.musicManagement.service.MusicService;
-import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
 public class MusicServiceImpl implements MusicService {
 	@Autowired
 	private MusicRepository musicRepository;
+
+	public void setMusicRepository(MusicRepository musicRepository) {
+		this.musicRepository = musicRepository;
+	}
 
 	@Override
 	public Iterable<Music> getMusics() {
@@ -40,22 +41,22 @@ public class MusicServiceImpl implements MusicService {
 	@Override
 	public ResponseEntity<Object> createMusic(Music music) {
 		Music savedMusic = musicRepository.save(music);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMusic.getId())
-				.toUri();
-
-		return ResponseEntity.created(location).build();
+//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMusic.getId())
+//				.toUri();
+//
+//		return ResponseEntity.created(location).build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
-	public String deleteMusic(int music_id) {
-		try {
-			musicRepository.delete(music_id);
-			return Constant.SUCCESS;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Constant.NOT_SUCCESS;
+	public ResponseEntity<Object> deleteMusic(int id) {
+		Music musicOptional = musicRepository.findOne(id);
+		if (musicOptional == null) {
+			System.out.print("1\n");
+			return ResponseEntity.notFound().build();
 		}
-
+		musicRepository.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override

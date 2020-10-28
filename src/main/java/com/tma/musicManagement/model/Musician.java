@@ -1,5 +1,6 @@
 package com.tma.musicManagement.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.tma.musicManagement.utils.Constant;
 
 @Entity
 @Table(name = "Musician")
@@ -36,7 +39,7 @@ public class Musician {
 	}
 
 	public String toString() {
-		return "Name: " + this.name;
+		return "Name: " + this.name + ", Sex: " + this.sex + ", birthday: " + this.birthday;
 	}
 
 	public String getName() {
@@ -69,5 +72,19 @@ public class Musician {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String check() throws Exception {
+		try {
+			if (this.getName().length() < 1 || this.getName().length() > 50) {
+				return Constant.NAME_NOT_VALID;
+			} else if (Arrays.stream(Constant.SEXS).anyMatch(this.getSex()::equals) == false) {
+				return Constant.SEX_NOT_VALID;
+			}
+			return Constant.VALID;
+		} catch (Exception e) {
+			throw new Exception(Constant.MUSICIAN_NULL);
+		}
+
 	}
 }

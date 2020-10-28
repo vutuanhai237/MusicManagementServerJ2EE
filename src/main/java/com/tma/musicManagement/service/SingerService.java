@@ -13,5 +13,5 @@ public interface SingerService {
 
 	public ResponseEntity<Object> createSinger(Singer singer);
 
-	public String deleteSinger(int id);
+	public ResponseEntity<Object> deleteSinger(int id);
 }

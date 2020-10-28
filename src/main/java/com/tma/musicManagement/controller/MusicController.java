@@ -22,10 +22,11 @@ import com.tma.musicManagement.service.MusicService;
 public class MusicController {
 
 	@Autowired
-	private Music music;
-
-	@Autowired
 	private MusicService musicService;
+
+	public void setMusicService(MusicService musicService) {
+		this.musicService = musicService;
+	}
 
 	@GetMapping(path = "/genre_quantities")
 	public @ResponseBody List<?> getGenreQuantities() {
@@ -58,7 +59,7 @@ public class MusicController {
 	}
 
 	@DeleteMapping(path = "/musics")
-	public @ResponseBody String deleteMusic(@RequestParam int id) {
+	public @ResponseBody ResponseEntity<Object> deleteMusic(@RequestParam int id) {
 		return musicService.deleteMusic(id);
 	}
 }
