@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.repository.MusicRepository;
 import com.tma.musicManagement.service.MusicService;
+import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
@@ -23,6 +24,7 @@ public class MusicServiceImpl implements MusicService {
 
 	@Override
 	public Iterable<Music> getMusics() {
+
 		return musicRepository.findAll();
 	}
 
@@ -33,7 +35,6 @@ public class MusicServiceImpl implements MusicService {
 			System.out.print("1\n");
 			return ResponseEntity.notFound().build();
 		}
-		music.setId(id);
 		musicRepository.save(music);
 		return ResponseEntity.noContent().build();
 	}
@@ -72,6 +73,31 @@ public class MusicServiceImpl implements MusicService {
 	@Override
 	public List<?> getSingerQuantities() {
 		return musicRepository.getSingerQuantities();
+	}
+
+	public static String check(Music music) throws Exception {
+		try {
+			String result = GenreServiceImpl.check(music.getGenre());
+			if (result != Constant.VALID) {
+				return result;
+			}
+		} catch (Exception e) {
+			throw new Exception(Constant.GENRE_NULL);
+		}
+
+		try {
+			String result = MusicianServiceImpl.check(music.getMusician());
+			if (result != Constant.VALID) {
+				return result;
+			}
+		} catch (Exception e) {
+			throw new Exception(Constant.MUSICIAN_NULL);
+		}
+		try {
+			return SingerServiceImpl.check(music.getSinger());
+		} catch (Exception e) {
+			throw new Exception(Constant.SINGER_NULL);
+		}
 	}
 
 }

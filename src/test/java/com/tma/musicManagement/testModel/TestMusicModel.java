@@ -11,6 +11,7 @@ import com.tma.musicManagement.model.Genre;
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.model.Singer;
+import com.tma.musicManagement.service.impl.MusicServiceImpl;
 import com.tma.musicManagement.utils.Constant;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,7 +69,7 @@ public class TestMusicModel {
 	public void test_MusicModel_check_genreNull() throws Exception {
 		try {
 			music.setGenre(null);
-			this.music.check();
+			MusicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.GENRE_NULL, e.getMessage());
 		}
@@ -79,7 +80,7 @@ public class TestMusicModel {
 		try {
 			music.getGenre().setName("Ca");
 			music.setMusician(null);
-			this.music.check();
+			MusicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.MUSICIAN_NULL, e.getMessage());
 		}
@@ -93,7 +94,7 @@ public class TestMusicModel {
 			music.getMusician().setName("Ca");
 			music.getMusician().setSex("Male");
 			music.setSinger(null);
-			this.music.check();
+			MusicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.SINGER_NULL, e.getMessage());
 		}

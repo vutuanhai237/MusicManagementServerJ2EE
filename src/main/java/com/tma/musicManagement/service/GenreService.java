@@ -7,6 +7,7 @@ import com.tma.musicManagement.model.Genre;
 
 @Service
 public interface GenreService {
+
 	public Iterable<Genre> getGenres();
 
 	public ResponseEntity<Object> updateGenre(int id, Genre genre);

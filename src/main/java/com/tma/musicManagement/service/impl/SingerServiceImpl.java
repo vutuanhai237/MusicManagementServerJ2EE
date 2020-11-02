@@ -1,5 +1,7 @@
 package com.tma.musicManagement.service.impl;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tma.musicManagement.model.Singer;
 import com.tma.musicManagement.repository.SingerRepository;
 import com.tma.musicManagement.service.SingerService;
+import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
@@ -56,4 +59,17 @@ public class SingerServiceImpl implements SingerService {
 		return ResponseEntity.noContent().build();
 	}
 
+	public static String check(Singer singer) throws Exception {
+		try {
+			if (singer.getName().length() < 1 || singer.getName().length() > 50) {
+				return Constant.NAME_NOT_VALID;
+			} else if (Arrays.stream(Constant.SEXS).anyMatch(singer.getSex()::equals) == false) {
+				return Constant.SEX_NOT_VALID;
+			}
+			return Constant.VALID;
+		} catch (Exception e) {
+			return Constant.MUSICIAN_NULL;
+		}
+
+	}
 }

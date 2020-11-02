@@ -1,5 +1,7 @@
 package com.tma.musicManagement.service.impl;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.repository.MusicianRepository;
 import com.tma.musicManagement.service.MusicianService;
+import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
@@ -57,4 +60,17 @@ public class MusicianServiceImpl implements MusicianService {
 
 	}
 
+	public static String check(Musician musician) throws Exception {
+		try {
+			if (musician.getName().length() < 1 || musician.getName().length() > 50) {
+				return Constant.NAME_NOT_VALID;
+			} else if (Arrays.stream(Constant.SEXS).anyMatch(musician.getSex()::equals) == false) {
+				return Constant.SEX_NOT_VALID;
+			}
+			return Constant.VALID;
+		} catch (Exception e) {
+			throw new Exception(Constant.MUSICIAN_NULL);
+		}
+
+	}
 }

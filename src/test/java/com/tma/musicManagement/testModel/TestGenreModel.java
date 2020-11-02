@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tma.musicManagement.model.Genre;
+import com.tma.musicManagement.service.impl.GenreServiceImpl;
 import com.tma.musicManagement.utils.Constant;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,27 +40,27 @@ public class TestGenreModel {
 
 	@Test
 	public void test_GenreModel_check_Valid() throws Exception {
-		assertEquals(Constant.VALID, this.genre.check());
+		assertEquals(Constant.VALID, GenreServiceImpl.check(this.genre));
 	}
 
 	@Test
 	public void test_GenreModel_check_notValid1() throws Exception {
 		this.genre.setName("");
-		assertEquals(Constant.GENRE_NOT_VALID, this.genre.check());
+		assertEquals(Constant.GENRE_NOT_VALID, GenreServiceImpl.check(this.genre));
 	}
 
 	@Test
 	public void test_GenreModel_check_notValid2() throws Exception {
 		this.genre.setName(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(Constant.GENRE_NOT_VALID, this.genre.check());
+		assertEquals(Constant.GENRE_NOT_VALID, GenreServiceImpl.check(this.genre));
 	}
 
 	@Test
 	public void test_GenreModel_check_null() throws Exception {
 		try {
 			this.genre.setName(null);
-			this.genre.check();
+			GenreServiceImpl.check(this.genre);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), Constant.GENRE_NULL);
 		}

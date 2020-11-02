@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tma.musicManagement.model.Genre;
 import com.tma.musicManagement.repository.GenreRepository;
 import com.tma.musicManagement.service.GenreService;
+import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
@@ -43,7 +44,7 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public ResponseEntity<Object> createGenre(Genre genre) {
-		Genre savedGenre = genreRepository.save(genre);
+		genreRepository.save(genre);
 		// URI location = getLocation(savedGenre);
 		return ResponseEntity.noContent().build();
 	}
@@ -60,4 +61,15 @@ public class GenreServiceImpl implements GenreService {
 
 	}
 
+	public static String check(Genre genre) throws Exception {
+		try {
+			if (genre.getName().length() < 50 && genre.getName().length() > 1) {
+				return Constant.VALID;
+			}
+			return Constant.GENRE_NOT_VALID;
+		} catch (Exception e) {
+			throw new Exception(Constant.GENRE_NULL);
+		}
+
+	}
 }

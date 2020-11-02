@@ -3,13 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.turreta.spring.autowiretolist</groupId>
-	<artifactId>com-turreta-spring-autowiretolist</artifactId>
+	<groupId>com.tma</groupId>
+	<artifactId>musicmanagement</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>com-turreta-spring-autowiretolist</name>
-	<description>Demo - autowire @beans to a list</description>
+	<name>MusicManagementServer</name>
+	<description>Final project for TMA's training program</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

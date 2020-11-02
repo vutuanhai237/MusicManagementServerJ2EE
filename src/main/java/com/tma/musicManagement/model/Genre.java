@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.tma.musicManagement.utils.Constant;
-
 @Entity
 @Table(name = "Genre")
 @Component
@@ -53,15 +51,4 @@ public class Genre {
 		this.id = id;
 	}
 
-	public String check() throws Exception {
-		try {
-			if (this.getName().length() < 50 && this.getName().length() > 1) {
-				return Constant.VALID;
-			}
-			return Constant.GENRE_NOT_VALID;
-		} catch (Exception e) {
-			throw new Exception(Constant.GENRE_NULL);
-		}
-
-	}
 }

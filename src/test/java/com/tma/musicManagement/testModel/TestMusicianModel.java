@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tma.musicManagement.model.Musician;
+import com.tma.musicManagement.service.impl.MusicianServiceImpl;
 import com.tma.musicManagement.utils.Constant;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,26 +52,26 @@ public class TestMusicianModel {
 
 	@Test
 	public void test_MusicianModel_check_Valid() throws Exception {
-		assertEquals(Constant.VALID, this.musician.check());
+		assertEquals(Constant.VALID, MusicianServiceImpl.check(this.musician));
 	}
 
 	@Test
 	public void test_MusicianModel_check_NameNotValid1() throws Exception {
 		this.musician.setName("");
-		assertEquals(Constant.NAME_NOT_VALID, this.musician.check());
+		assertEquals(Constant.NAME_NOT_VALID, MusicianServiceImpl.check(this.musician));
 	}
 
 	@Test
 	public void test_MusicianModel_check_NameNotValid2() throws Exception {
 		this.musician.setName(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(Constant.NAME_NOT_VALID, this.musician.check());
+		assertEquals(Constant.NAME_NOT_VALID, MusicianServiceImpl.check(this.musician));
 	}
 
 	@Test
 	public void test_MusicianModel_check_SexNotValid() throws Exception {
 		this.musician.setSex("Fe");
-		assertEquals(Constant.SEX_NOT_VALID, this.musician.check());
+		assertEquals(Constant.SEX_NOT_VALID, MusicianServiceImpl.check(this.musician));
 
 	}
 
@@ -78,7 +79,7 @@ public class TestMusicianModel {
 	public void test_MusicianModel_check_null() throws Exception {
 		try {
 			this.musician.setName(null);
-			this.musician.check();
+			MusicianServiceImpl.check(this.musician);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), Constant.MUSICIAN_NULL);
 

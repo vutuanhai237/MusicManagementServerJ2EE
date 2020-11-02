@@ -25,4 +25,5 @@ public interface MusicService {
 	public ResponseEntity<Object> deleteMusic(int id);
 
 	public void setMusicRepository(MusicRepository mockMusicRepository);
+
 }

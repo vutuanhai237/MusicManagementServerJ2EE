@@ -2,41 +2,43 @@ package com.tma.musicManagement.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "Singer")
+@Table(name = "User")
 @Component
-public class Singer {
+public class User {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
 	private int id;
 	@Column(name = "NAME")
 	private String name;
-	@Column(name = "SEX")
-	private String sex;
-	@Column(name = "BIRTHDAY")
-	private String birthday;
+	@Column(name = "USERNAME")
+	private String username;
+	@Column(name = "PASSWORD")
+	private String password;
+
 	@Autowired
-	@OneToMany(mappedBy = "singer", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "users")
 	private List<Music> musics;
 
-	public Singer() {
+	public User() {
 		this.name = "";
+		this.username = "";
+		this.password = "";
 	}
 
 	public String toString() {
-		return "Name: " + this.name + ", Sex: " + this.sex + ", birthday: " + this.birthday;
+		return "Name: " + this.name;
 	}
 
 	public String getName() {
@@ -47,20 +49,20 @@ public class Singer {
 		this.name = name;
 	}
 
-	public String getBirthday() {
-		return birthday;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getSex() {
-		return sex;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSex(String sex) {
-		this.sex = sex;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public int getId() {

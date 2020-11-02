@@ -1,17 +1,19 @@
 package com.tma.musicManagement.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.tma.musicManagement.utils.Constant;
 
 @Entity
 @Table(name = "Music")
@@ -39,6 +41,19 @@ public class Music {
 	@JoinColumn(name = "singer_id")
 	private Singer singer;
 
+	@ManyToMany
+	@JoinTable(name = "playlist", joinColumns = @JoinColumn(name = "music_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private List<User> users;
+
+	@Autowired
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
 	@Autowired
 	public Singer getSinger() {
 		return this.singer;
@@ -46,10 +61,6 @@ public class Music {
 
 	public void setSinger(Singer singer) {
 		this.singer = singer;
-	}
-
-	public Music(Singer singer) {
-		this.setSinger(singer);
 	}
 
 	@Autowired
@@ -105,30 +116,4 @@ public class Music {
 		this.releaseTime = releaseTime;
 	}
 
-	public String check() throws Exception {
-		try {
-			if (this.getGenre().check() == Constant.VALID) {
-
-			} else {
-				return this.getGenre().check();
-			}
-		} catch (Exception e) {
-			throw new Exception(Constant.GENRE_NULL);
-		}
-
-		try {
-			if (this.getMusician().check() == Constant.VALID) {
-
-			} else {
-				return this.getMusician().check();
-			}
-		} catch (Exception e) {
-			throw new Exception(Constant.MUSICIAN_NULL);
-		}
-		try {
-			return this.getSinger().check();
-		} catch (Exception e) {
-			throw new Exception(Constant.SINGER_NULL);
-		}
-	}
 }
