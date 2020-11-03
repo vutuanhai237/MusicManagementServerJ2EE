@@ -28,8 +28,8 @@ public class PlaylistController {
 	}
 
 	@GetMapping(path = "/playlist")
-	public @ResponseBody List<?> getPlaylistByUId(@RequestParam int id) {
-		return playlistService.getPlaylistByUId(id);
+	public @ResponseBody List<?> getPlaylistByUId(@RequestParam int uid) {
+		return playlistService.getPlaylistByUId(uid);
 	}
 
 	@GetMapping(path = "/playlists")
@@ -43,15 +43,15 @@ public class PlaylistController {
 	}
 
 	@DeleteMapping(path = "/playlist")
-	public ResponseEntity<Object> deletePlaylistByTwoId(@RequestParam int uid, @RequestParam int mid) {
-		return playlistService.deletePlaylistByID(uid, mid);
+	public void deletePlaylistByTwoId(@RequestParam int uid, @RequestParam int mid) {
+		playlistService.deletePlaylistByID(uid, mid);
 	}
 
-	@DeleteMapping(path = "/playlists")
-	public void deletePlaylist(@RequestParam int uid, @RequestParam int mid) {
-		Playlist playlist = new Playlist();
-		playlist.setMusicId(mid);
-		playlist.setUserId(uid);
-		playlistService.deletePlaylist(playlist);
-	}
+//	@DeleteMapping(path = "/playlists")
+//	public void deletePlaylist(@RequestParam int uid, @RequestParam int mid) {
+//		Playlist playlist = new Playlist();
+//		playlist.setMusicId(mid);
+//		playlist.setUserId(uid);
+//		playlistService.deletePlaylist(playlist);
+//	}
 }

@@ -23,7 +23,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
 	@Override
 	public List<?> getPlaylistByUId(int id) {
-		System.out.print(id);
 		return (List<?>) playlistRepository.getMusicsByUId(id);
 	}
 
@@ -39,10 +38,8 @@ public class PlaylistServiceImpl implements PlaylistService {
 	}
 
 	@Override
-	public ResponseEntity<Object> deletePlaylistByID(int uid, int mid) {
-		// TODO Auto-generated method stub
-		return playlistRepository.deleteByTwoID(uid, mid);
-
+	public void deletePlaylistByID(int uid, int mid) {
+		playlistRepository.deleteByTwoID(uid, mid);
 	}
 
 	@Override

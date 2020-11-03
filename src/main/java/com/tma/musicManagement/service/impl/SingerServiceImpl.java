@@ -31,7 +31,6 @@ public class SingerServiceImpl implements SingerService {
 	public ResponseEntity<Object> updateSinger(int id, Singer singer) {
 		Singer singerOptional = singerRepository.findOne(id);
 		if (singerOptional == null) {
-			System.out.print("1\n");
 			return ResponseEntity.notFound().build();
 		}
 		singer.setId(id);
@@ -42,10 +41,6 @@ public class SingerServiceImpl implements SingerService {
 	@Override
 	public ResponseEntity<Object> createSinger(Singer singer) {
 		Singer savedSinger = singerRepository.save(singer);
-//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//				.buildAndExpand(savedSinger.getId()).toUri();
-//
-//		return ResponseEntity.created(location).build();
 		return ResponseEntity.noContent().build();
 	}
 
@@ -71,5 +66,10 @@ public class SingerServiceImpl implements SingerService {
 			return Constant.MUSICIAN_NULL;
 		}
 
+	}
+
+	@Override
+	public Singer getSingerById(int id) {
+		return singerRepository.findOne(id);
 	}
 }

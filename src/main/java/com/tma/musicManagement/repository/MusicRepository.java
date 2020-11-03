@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.tma.musicManagement.model.Music;
+import com.tma.musicManagement.model.Singer;
 
 @Repository
 public interface MusicRepository extends CrudRepository<Music, Integer> {
@@ -18,4 +19,7 @@ public interface MusicRepository extends CrudRepository<Music, Integer> {
 
 	@Query("select m.singer, count(*) from Music as m group by m.singer")
 	List<?> getSingerQuantities();
+
+	@Query("from Music as m where m.singer=?1")
+	Iterable<Music> getMusicsBySinger(Singer singer);
 }

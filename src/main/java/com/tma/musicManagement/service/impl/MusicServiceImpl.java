@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tma.musicManagement.model.Music;
+import com.tma.musicManagement.model.Singer;
 import com.tma.musicManagement.repository.MusicRepository;
 import com.tma.musicManagement.service.MusicService;
 import com.tma.musicManagement.utils.Constant;
@@ -32,20 +33,17 @@ public class MusicServiceImpl implements MusicService {
 	public ResponseEntity<Object> updateMusic(int id, Music music) {
 		Music musicOptional = musicRepository.findOne(id);
 		if (musicOptional == null) {
-			System.out.print("1\n");
+
 			return ResponseEntity.notFound().build();
 		}
+		music.setId(id);
 		musicRepository.save(music);
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<Object> createMusic(Music music) {
-		Music savedMusic = musicRepository.save(music);
-//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMusic.getId())
-//				.toUri();
-//
-//		return ResponseEntity.created(location).build();
+		musicRepository.save(music);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -53,7 +51,6 @@ public class MusicServiceImpl implements MusicService {
 	public ResponseEntity<Object> deleteMusic(int id) {
 		Music musicOptional = musicRepository.findOne(id);
 		if (musicOptional == null) {
-			System.out.print("1\n");
 			return ResponseEntity.notFound().build();
 		}
 		musicRepository.delete(id);
@@ -98,6 +95,11 @@ public class MusicServiceImpl implements MusicService {
 		} catch (Exception e) {
 			throw new Exception(Constant.SINGER_NULL);
 		}
+	}
+
+	@Override
+	public Iterable<Music> getMusicsBySinger(Singer singer) {
+		return musicRepository.getMusicsBySinger(singer);
 	}
 
 }

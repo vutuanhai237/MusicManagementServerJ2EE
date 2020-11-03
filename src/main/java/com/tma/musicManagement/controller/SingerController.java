@@ -31,6 +31,11 @@ public class SingerController {
 		return singerService.getSingers();
 	}
 
+	@GetMapping(path = "/singer")
+	public @ResponseBody Singer getSingerById(@RequestParam int id) {
+		return singerService.getSingerById(id);
+	}
+
 	@PostMapping(path = "/singers")
 	public @ResponseBody ResponseEntity<Object> createSinger(@RequestBody Singer singer) {
 		return singerService.createSinger(singer);

@@ -18,5 +18,5 @@ public interface PlaylistService {
 
 	public void deletePlaylist(Playlist playlist);
 
-	public ResponseEntity<Object> deletePlaylistByID(int uid, int mid);
+	public void deletePlaylistByID(int uid, int mid);
 }

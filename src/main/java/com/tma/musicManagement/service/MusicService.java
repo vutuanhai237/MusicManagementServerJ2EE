@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tma.musicManagement.model.Music;
+import com.tma.musicManagement.model.Singer;
 import com.tma.musicManagement.repository.MusicRepository;
 
 @Service
@@ -25,5 +26,7 @@ public interface MusicService {
 	public ResponseEntity<Object> deleteMusic(int id);
 
 	public void setMusicRepository(MusicRepository mockMusicRepository);
+
+	public Iterable<Music> getMusicsBySinger(Singer singer);
 
 }

@@ -2,9 +2,11 @@ package com.tma.musicManagement.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import com.tma.musicManagement.model.Playlist;
@@ -16,7 +18,9 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Integer> {
 	@Query("select p.music_id from Playlist as p where p.user_id=?1")
 	List<?> getMusicsByUId(int id);
 
+	@Transactional
+	@Modifying
 	@Query("delete from Playlist as p where p.user_id=?1 and p.music_id=?2")
-	ResponseEntity<Object> deleteByTwoID(int uid, int mid);
+	void deleteByTwoID(int uid, int mid);
 
 }

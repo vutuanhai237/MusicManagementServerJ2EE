@@ -9,6 +9,8 @@ import com.tma.musicManagement.model.Singer;
 public interface SingerService {
 	public Iterable<Singer> getSingers();
 
+	public Singer getSingerById(int id);
+
 	public ResponseEntity<Object> updateSinger(int id, Singer singer);
 
 	public ResponseEntity<Object> createSinger(Singer singer);

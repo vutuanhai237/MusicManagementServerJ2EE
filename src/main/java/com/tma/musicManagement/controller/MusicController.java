@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tma.musicManagement.model.Music;
+import com.tma.musicManagement.model.Singer;
 import com.tma.musicManagement.service.MusicService;
 
 @CrossOrigin
@@ -41,6 +42,11 @@ public class MusicController {
 	@GetMapping(path = "/singer_quantities")
 	public @ResponseBody List<?> getSingerQuantities() {
 		return musicService.getSingerQuantities();
+	}
+
+	@PostMapping(path = "/musics_singer")
+	public @ResponseBody Iterable<Music> getMusicsBySid(@RequestBody Singer singer) {
+		return musicService.getMusicsBySinger(singer);
 	}
 
 	@GetMapping(path = "/musics")
