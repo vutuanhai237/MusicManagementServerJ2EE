@@ -15,9 +15,11 @@ import com.tma.musicManagement.utils.Constant;
 public class TestMusicianModel {
 
 	Musician musician;
+	MusicianServiceImpl musicianServiceImpl;
 
 	@Before
 	public void initTest() {
+		musicianServiceImpl = new MusicianServiceImpl();
 		musician = new Musician();
 		musician.setId(1);
 		musician.setName("Hoài Linh");
@@ -52,26 +54,26 @@ public class TestMusicianModel {
 
 	@Test
 	public void test_MusicianModel_check_Valid() throws Exception {
-		assertEquals(Constant.VALID, MusicianServiceImpl.check(this.musician));
+		assertEquals(Constant.VALID, musicianServiceImpl.check(this.musician));
 	}
 
 	@Test
 	public void test_MusicianModel_check_NameNotValid1() throws Exception {
 		this.musician.setName("");
-		assertEquals(Constant.NAME_NOT_VALID, MusicianServiceImpl.check(this.musician));
+		assertEquals(Constant.NAME_NOT_VALID, musicianServiceImpl.check(this.musician));
 	}
 
 	@Test
 	public void test_MusicianModel_check_NameNotValid2() throws Exception {
 		this.musician.setName(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(Constant.NAME_NOT_VALID, MusicianServiceImpl.check(this.musician));
+		assertEquals(Constant.NAME_NOT_VALID, musicianServiceImpl.check(this.musician));
 	}
 
 	@Test
 	public void test_MusicianModel_check_SexNotValid() throws Exception {
 		this.musician.setSex("Fe");
-		assertEquals(Constant.SEX_NOT_VALID, MusicianServiceImpl.check(this.musician));
+		assertEquals(Constant.SEX_NOT_VALID, musicianServiceImpl.check(this.musician));
 
 	}
 
@@ -79,7 +81,7 @@ public class TestMusicianModel {
 	public void test_MusicianModel_check_null() throws Exception {
 		try {
 			this.musician.setName(null);
-			MusicianServiceImpl.check(this.musician);
+			musicianServiceImpl.check(this.musician);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), Constant.MUSICIAN_NULL);
 

@@ -7,44 +7,44 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.tma.musicManagement.dao.PlaylistDAO;
 import com.tma.musicManagement.model.Playlist;
-import com.tma.musicManagement.repository.PlaylistRepository;
 import com.tma.musicManagement.service.PlaylistService;
 
 @Service
 @Primary
 public class PlaylistServiceImpl implements PlaylistService {
 	@Autowired
-	private PlaylistRepository playlistRepository;
+	private PlaylistDAO playlistDAO;
 
-	public void setPlaylistRepository(PlaylistRepository playlistRepository) {
-		this.playlistRepository = playlistRepository;
+	public void setPlaylistDAO(PlaylistDAO playlistDAO) {
+		this.playlistDAO = playlistDAO;
 	}
 
 	@Override
 	public List<?> getPlaylistByUId(int id) {
-		return (List<?>) playlistRepository.getMusicsByUId(id);
+		return (List<?>) playlistDAO.getMusicsByUId(id);
 	}
 
 	@Override
 	public ResponseEntity<Object> createPlaylist(Playlist playlist) {
-		playlistRepository.save(playlist);
+		playlistDAO.createPlaylist(playlist);
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public Iterable<Playlist> getPlaylists() {
-		return playlistRepository.findAll();
+		return playlistDAO.getPlaylists();
 	}
 
 	@Override
 	public void deletePlaylistByID(int uid, int mid) {
-		playlistRepository.deleteByTwoID(uid, mid);
+		playlistDAO.deleteByTwoID(uid, mid);
 	}
 
 	@Override
 	public void deletePlaylist(Playlist playlist) {
-		playlistRepository.delete(playlist);
+		playlistDAO.deletePlaylist(playlist);
 	}
 
 }

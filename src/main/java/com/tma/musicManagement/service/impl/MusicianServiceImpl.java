@@ -4,11 +4,12 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.tma.musicManagement.dao.MusicianDAO;
 import com.tma.musicManagement.model.Musician;
-import com.tma.musicManagement.repository.MusicianRepository;
 import com.tma.musicManagement.service.MusicianService;
 import com.tma.musicManagement.utils.Constant;
 
@@ -16,51 +17,48 @@ import com.tma.musicManagement.utils.Constant;
 @Primary
 public class MusicianServiceImpl implements MusicianService {
 	@Autowired
-	private MusicianRepository musicianRepository;
+	private MusicianDAO musicianDAO;
 
-	public void setMusicianRepository(MusicianRepository musicianRepository) {
-		this.musicianRepository = musicianRepository;
+	public void setMusicianDAO(MusicianDAO musicianDAO) {
+		this.musicianDAO = musicianDAO;
 	}
 
 	@Override
 	public Iterable<Musician> getMusicians() {
-		return musicianRepository.findAll();
+		return musicianDAO.getMusicians();
 	}
 
 	@Override
 	public ResponseEntity<Object> updateMusician(int id, Musician musician) {
-		Musician genreOptional = musicianRepository.findOne(id);
-		if (genreOptional == null) {
-			System.out.print("1\n");
+		Musician musicianOptional = musicianDAO.getMusicianById(id);
+		if (musicianOptional == null) {
 			return ResponseEntity.notFound().build();
 		}
 		musician.setId(id);
-		musicianRepository.save(musician);
-		return ResponseEntity.noContent().build();
+		return this.createMusician(musician);
 	}
 
 	@Override
 	public ResponseEntity<Object> createMusician(Musician musician) {
-		Musician savedMusician = musicianRepository.save(musician);
-//		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//				.buildAndExpand(savedMusician.getId()).toUri();
-
-//		return ResponseEntity.created(location).build();
-		return ResponseEntity.noContent().build();
+		try {
+			String message = this.check(musician);
+			if (message == Constant.VALID) {
+				musicianDAO.createMusician(musician);
+				return ResponseEntity.noContent().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@Override
 	public ResponseEntity<Object> deleteMusician(int id) {
-		Musician musicianOptional = musicianRepository.findOne(id);
-		if (musicianOptional == null) {
-			return ResponseEntity.notFound().build();
-		}
-		musicianRepository.delete(id);
-		return ResponseEntity.noContent().build();
-
+		return musicianDAO.deleteMusicianById(id);
 	}
 
-	public static String check(Musician musician) throws Exception {
+	public String check(Musician musician) throws Exception {
 		try {
 			if (musician.getName().length() < 1 || musician.getName().length() > 50) {
 				return Constant.NAME_NOT_VALID;

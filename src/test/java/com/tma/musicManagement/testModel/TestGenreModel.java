@@ -15,9 +15,11 @@ import com.tma.musicManagement.utils.Constant;
 public class TestGenreModel {
 
 	Genre genre;
+	GenreServiceImpl genreServiceImpl;
 
 	@Before
 	public void initTest() {
+		genreServiceImpl = new GenreServiceImpl();
 		genre = new Genre();
 		genre.setId(1);
 		genre.setName("Trẻ");
@@ -40,27 +42,27 @@ public class TestGenreModel {
 
 	@Test
 	public void test_GenreModel_check_Valid() throws Exception {
-		assertEquals(Constant.VALID, GenreServiceImpl.check(this.genre));
+		assertEquals(Constant.VALID, genreServiceImpl.check(this.genre));
 	}
 
 	@Test
 	public void test_GenreModel_check_notValid1() throws Exception {
 		this.genre.setName("");
-		assertEquals(Constant.GENRE_NOT_VALID, GenreServiceImpl.check(this.genre));
+		assertEquals(Constant.GENRE_NOT_VALID, genreServiceImpl.check(this.genre));
 	}
 
 	@Test
 	public void test_GenreModel_check_notValid2() throws Exception {
 		this.genre.setName(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(Constant.GENRE_NOT_VALID, GenreServiceImpl.check(this.genre));
+		assertEquals(Constant.GENRE_NOT_VALID, genreServiceImpl.check(this.genre));
 	}
 
 	@Test
 	public void test_GenreModel_check_null() throws Exception {
 		try {
 			this.genre.setName(null);
-			GenreServiceImpl.check(this.genre);
+			genreServiceImpl.check(this.genre);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), Constant.GENRE_NULL);
 		}

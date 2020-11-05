@@ -55,7 +55,7 @@ public class MusicController {
 	}
 
 	@PostMapping(path = "/musics")
-	public @ResponseBody ResponseEntity<Object> createMusic(@RequestBody Music music) {
+	public @ResponseBody ResponseEntity<Object> createMusic(@RequestBody Music music) throws Exception {
 		return musicService.createMusic(music);
 	}
 

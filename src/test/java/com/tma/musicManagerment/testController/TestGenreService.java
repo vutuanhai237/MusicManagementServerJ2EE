@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tma.musicManagement.controller.GenreController;
+import com.tma.musicManagement.dao.GenreDAO;
 import com.tma.musicManagement.model.Genre;
 import com.tma.musicManagement.repository.GenreRepository;
 import com.tma.musicManagement.service.impl.GenreServiceImpl;
@@ -36,7 +37,9 @@ public class TestGenreService {
 		genre2.setName("B");
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
-		genreService.setGenreRepository(mockGenreRepository);
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
 		genreController = new GenreController();
 		genreController.setGenreService(genreService);
 		Mockito.when(mockGenreRepository.findAll()).thenReturn(Arrays.asList(genre1, genre2));
@@ -51,7 +54,9 @@ public class TestGenreService {
 
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
-		genreService.setGenreRepository(mockGenreRepository);
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
 		genreController = new GenreController();
 		genreController.setGenreService(genreService);
 
@@ -71,7 +76,9 @@ public class TestGenreService {
 
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
-		genreService.setGenreRepository(mockGenreRepository);
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
 		genreController = new GenreController();
 		genreController.setGenreService(genreService);
 
@@ -92,7 +99,9 @@ public class TestGenreService {
 
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
-		genreService.setGenreRepository(mockGenreRepository);
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
 		genreController = new GenreController();
 		genreController.setGenreService(genreService);
 
@@ -107,7 +116,9 @@ public class TestGenreService {
 		genre1.setId(10);
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
-		genreService.setGenreRepository(mockGenreRepository);
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
 		genreController = new GenreController();
 		genreController.setGenreService(genreService);
 		Mockito.when(mockGenreRepository.findOne(10)).thenReturn(genre1);
@@ -118,7 +129,9 @@ public class TestGenreService {
 	public void test_GenreController_deleteGenre_NotValid() throws Exception {
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
-		genreService.setGenreRepository(mockGenreRepository);
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
 		genreController = new GenreController();
 		genreController.setGenreService(genreService);
 		Mockito.when(mockGenreRepository.findOne(10)).thenReturn(null);

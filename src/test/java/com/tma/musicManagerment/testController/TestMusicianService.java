@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tma.musicManagement.controller.MusicianController;
+import com.tma.musicManagement.dao.MusicianDAO;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.repository.MusicianRepository;
 import com.tma.musicManagement.service.impl.MusicianServiceImpl;
@@ -41,9 +42,11 @@ public class TestMusicianService {
 	public void test_MusicianController_getMusicians() {
 
 		MusicianRepository mockMusicianRepository = Mockito.mock(MusicianRepository.class);
+		MusicianDAO musicianDAO = new MusicianDAO();
 		MusicianServiceImpl musicianService = new MusicianServiceImpl();
-		musicianService.setMusicianRepository(mockMusicianRepository);
 		musicianController = new MusicianController();
+		musicianDAO.setMusicianRepository(mockMusicianRepository);
+		musicianService.setMusicianDAO(musicianDAO);
 		musicianController.setMusicianService(musicianService);
 		Mockito.when(mockMusicianRepository.findAll()).thenReturn(Arrays.asList(musician1, musician2));
 		assertEquals(2, Helper.size(musicianController.getMusicians()));
@@ -53,9 +56,11 @@ public class TestMusicianService {
 	public void test_MusicianController_createMusician() throws URISyntaxException {
 
 		MusicianRepository mockMusicianRepository = Mockito.mock(MusicianRepository.class);
+		MusicianDAO musicianDAO = new MusicianDAO();
 		MusicianServiceImpl musicianService = new MusicianServiceImpl();
-		musicianService.setMusicianRepository(mockMusicianRepository);
 		musicianController = new MusicianController();
+		musicianDAO.setMusicianRepository(mockMusicianRepository);
+		musicianService.setMusicianDAO(musicianDAO);
 		musicianController.setMusicianService(musicianService);
 		Mockito.when(mockMusicianRepository.save(musician1)).thenReturn(musician1);
 		assertEquals("<204 No Content,{}>", musicianController.createMusician(musician1).toString());
@@ -65,11 +70,12 @@ public class TestMusicianService {
 	public void test_MusicianController_updateMusician_Valid() {
 
 		MusicianRepository mockMusicianRepository = Mockito.mock(MusicianRepository.class);
+		MusicianDAO musicianDAO = new MusicianDAO();
 		MusicianServiceImpl musicianService = new MusicianServiceImpl();
-		musicianService.setMusicianRepository(mockMusicianRepository);
 		musicianController = new MusicianController();
+		musicianDAO.setMusicianRepository(mockMusicianRepository);
+		musicianService.setMusicianDAO(musicianDAO);
 		musicianController.setMusicianService(musicianService);
-
 		Mockito.when(mockMusicianRepository.findOne(11)).thenReturn(musician1);
 		musician2.setId(11);
 		Mockito.when(mockMusicianRepository.save(musician1)).thenReturn(musician1);
@@ -80,9 +86,11 @@ public class TestMusicianService {
 	public void test_MusicianController_updateMusician_NotValid() {
 
 		MusicianRepository mockMusicianRepository = Mockito.mock(MusicianRepository.class);
+		MusicianDAO musicianDAO = new MusicianDAO();
 		MusicianServiceImpl musicianService = new MusicianServiceImpl();
-		musicianService.setMusicianRepository(mockMusicianRepository);
 		musicianController = new MusicianController();
+		musicianDAO.setMusicianRepository(mockMusicianRepository);
+		musicianService.setMusicianDAO(musicianDAO);
 		musicianController.setMusicianService(musicianService);
 
 		Mockito.when(mockMusicianRepository.findOne(9)).thenReturn(null);
@@ -93,9 +101,11 @@ public class TestMusicianService {
 	public void test_MusicianController_deleteMusician_Valid() {
 
 		MusicianRepository mockMusicianRepository = Mockito.mock(MusicianRepository.class);
+		MusicianDAO musicianDAO = new MusicianDAO();
 		MusicianServiceImpl musicianService = new MusicianServiceImpl();
-		musicianService.setMusicianRepository(mockMusicianRepository);
 		musicianController = new MusicianController();
+		musicianDAO.setMusicianRepository(mockMusicianRepository);
+		musicianService.setMusicianDAO(musicianDAO);
 		musicianController.setMusicianService(musicianService);
 		Mockito.when(mockMusicianRepository.findOne(10)).thenReturn(musician1);
 		assertEquals("<204 No Content,{}>", musicianController.deleteMusician(10).toString());
@@ -104,9 +114,11 @@ public class TestMusicianService {
 	@Test
 	public void test_GenreController_deleteGenre_NotValid() throws Exception {
 		MusicianRepository mockMusicianRepository = Mockito.mock(MusicianRepository.class);
+		MusicianDAO musicianDAO = new MusicianDAO();
 		MusicianServiceImpl musicianService = new MusicianServiceImpl();
-		musicianService.setMusicianRepository(mockMusicianRepository);
 		musicianController = new MusicianController();
+		musicianDAO.setMusicianRepository(mockMusicianRepository);
+		musicianService.setMusicianDAO(musicianDAO);
 		musicianController.setMusicianService(musicianService);
 		Mockito.when(mockMusicianRepository.findOne(10)).thenReturn(null);
 		assertEquals("<404 Not Found,{}>", musicianController.deleteMusician(10).toString());

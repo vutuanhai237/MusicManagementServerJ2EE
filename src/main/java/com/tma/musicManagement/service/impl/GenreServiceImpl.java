@@ -2,11 +2,12 @@ package com.tma.musicManagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.tma.musicManagement.dao.GenreDAO;
 import com.tma.musicManagement.model.Genre;
-import com.tma.musicManagement.repository.GenreRepository;
 import com.tma.musicManagement.service.GenreService;
 import com.tma.musicManagement.utils.Constant;
 
@@ -14,54 +15,55 @@ import com.tma.musicManagement.utils.Constant;
 @Primary
 public class GenreServiceImpl implements GenreService {
 	@Autowired
-	private GenreRepository genreRepository;
+	private GenreDAO genreDAO;
 
-	public void setGenreRepository(GenreRepository genreRepository) {
-		this.genreRepository = genreRepository;
+	public void setGenreDAO(GenreDAO genreDAO) {
+		this.genreDAO = genreDAO;
 	}
 
 	@Override
 	public Iterable<Genre> getGenres() {
-		return genreRepository.findAll();
+		return genreDAO.getGenres();
 	}
 
 	@Override
 	public ResponseEntity<Object> updateGenre(int id, Genre genre) {
-		Genre genreOptional = genreRepository.findOne(id);
+		Genre genreOptional = genreDAO.getGenreById(id);
 		if (genreOptional == null) {
-			System.out.print("1\n");
 			return ResponseEntity.notFound().build();
 		}
 		genre.setId(id);
-		genreRepository.save(genre);
-		return ResponseEntity.noContent().build();
+		return this.createGenre(genre);
 	}
-
-//	public URI getLocation(Genre savedGenre) {
-//		return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedGenre.getId())
-//				.toUri();
-//	}
 
 	@Override
 	public ResponseEntity<Object> createGenre(Genre genre) {
-		genreRepository.save(genre);
-		// URI location = getLocation(savedGenre);
-		return ResponseEntity.noContent().build();
+		try {
+			String message = this.check(genre);
+			if (message == Constant.VALID) {
+				genreDAO.createGenre(genre);
+				return ResponseEntity.noContent().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@Override
 	public ResponseEntity<Object> deleteGenre(int id) {
-		Genre genreOptional = genreRepository.findOne(id);
+		Genre genreOptional = genreDAO.getGenreById(id);
 		if (genreOptional == null) {
 			return ResponseEntity.notFound().build();
 		}
 
-		genreRepository.delete(id);
+		genreDAO.deleteById(id);
 		return ResponseEntity.noContent().build();
 
 	}
 
-	public static String check(Genre genre) throws Exception {
+	public String check(Genre genre) throws Exception {
 		try {
 			if (genre.getName().length() < 50 && genre.getName().length() > 1) {
 				return Constant.VALID;

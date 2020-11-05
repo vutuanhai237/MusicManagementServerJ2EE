@@ -22,9 +22,11 @@ import com.tma.musicManagement.utils.Constant;
 public class TestMusicModel {
 
 	Music music;
+	MusicServiceImpl musicServiceImpl;
 
 	@Before
 	public void initTest() {
+		musicServiceImpl = new MusicServiceImpl();
 		music = new Music();
 		music.setId(1);
 		music.setGenre(new Genre());
@@ -84,7 +86,7 @@ public class TestMusicModel {
 	public void test_MusicModel_check_genreNull() throws Exception {
 		try {
 			music.setGenre(null);
-			MusicServiceImpl.check(this.music);
+			musicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.GENRE_NULL, e.getMessage());
 		}
@@ -95,7 +97,7 @@ public class TestMusicModel {
 		try {
 			music.getGenre().setName("Ca");
 			music.setMusician(null);
-			MusicServiceImpl.check(this.music);
+			musicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.MUSICIAN_NULL, e.getMessage());
 		}
@@ -109,7 +111,7 @@ public class TestMusicModel {
 			music.getMusician().setName("Ca");
 			music.getMusician().setSex("Male");
 			music.setSinger(null);
-			MusicServiceImpl.check(this.music);
+			musicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.SINGER_NULL, e.getMessage());
 		}

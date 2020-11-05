@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tma.musicManagement.controller.MusicController;
+import com.tma.musicManagement.dao.MusicDAO;
 import com.tma.musicManagement.model.Genre;
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.model.Musician;
@@ -50,8 +51,10 @@ public class TestMusicService {
 
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
-		musicService.setMusicRepository(mockMusicRepository);
+		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
 		musicController.setMusicService(musicService);
 		Mockito.when(mockMusicRepository.findAll()).thenReturn(Arrays.asList(music1, music2));
 		assertEquals(2, Helper.size(musicController.getMusics()));
@@ -62,11 +65,18 @@ public class TestMusicService {
 
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
-		musicService.setMusicRepository(mockMusicRepository);
+		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
 		musicController.setMusicService(musicService);
 		Mockito.when(mockMusicRepository.save(music1)).thenReturn(music1);
-		assertEquals("<204 No Content,{}>", musicController.createMusic(music1).toString());
+		try {
+			assertEquals("<204 No Content,{}>", musicController.createMusic(music1).toString());
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -74,8 +84,10 @@ public class TestMusicService {
 
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
-		musicService.setMusicRepository(mockMusicRepository);
+		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
 		musicController.setMusicService(musicService);
 
 		Mockito.when(mockMusicRepository.findOne(11)).thenReturn(music1);
@@ -89,8 +101,10 @@ public class TestMusicService {
 
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
-		musicService.setMusicRepository(mockMusicRepository);
+		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
 		musicController.setMusicService(musicService);
 
 		Mockito.when(mockMusicRepository.findOne(9)).thenReturn(null);
@@ -102,8 +116,10 @@ public class TestMusicService {
 
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
-		musicService.setMusicRepository(mockMusicRepository);
+		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
 		musicController.setMusicService(musicService);
 		Mockito.when(mockMusicRepository.findOne(10)).thenReturn(music1);
 		assertEquals("<204 No Content,{}>", musicController.deleteMusic(10).toString());
@@ -113,8 +129,10 @@ public class TestMusicService {
 	public void test_GenreController_deleteMusic_NotValid() throws Exception {
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
-		musicService.setMusicRepository(mockMusicRepository);
+		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
 		musicController.setMusicService(musicService);
 		Mockito.when(mockMusicRepository.findOne(10)).thenReturn(null);
 		assertEquals("<404 Not Found,{}>", musicController.deleteMusic(10).toString());
