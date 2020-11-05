@@ -38,7 +38,7 @@ public class PlaylistController {
 	}
 
 	@PostMapping(path = "/playlist")
-	public ResponseEntity<Object> getPlaylistByUId(@RequestBody Playlist playlist) {
+	public ResponseEntity<Object> createPlaylist(@RequestBody Playlist playlist) {
 		return playlistService.createPlaylist(playlist);
 	}
 
@@ -47,11 +47,4 @@ public class PlaylistController {
 		playlistService.deletePlaylistByID(uid, mid);
 	}
 
-//	@DeleteMapping(path = "/playlists")
-//	public void deletePlaylist(@RequestParam int uid, @RequestParam int mid) {
-//		Playlist playlist = new Playlist();
-//		playlist.setMusicId(mid);
-//		playlist.setUserId(uid);
-//		playlistService.deletePlaylist(playlist);
-//	}
 }

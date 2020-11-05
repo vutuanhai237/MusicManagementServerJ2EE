@@ -17,28 +17,13 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	public void setPlaylistService(UserService playlistService) {
-		this.userService = playlistService;
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 	@GetMapping(path = "/user")
 	public @ResponseBody User getUserById(@RequestParam int id) {
 		return userService.getUserById(id);
 	}
-
-//	@PostMapping(path = "/playlist")
-//	public @ResponseBody ResponseEntity<Object> createGenre(@RequestBody Genre genre) {
-//		return playlistService.createGenre(genre);
-//	}
-//
-//	@PutMapping(path = "/playlist")
-//	public @ResponseBody ResponseEntity<Object> updateGenre(@RequestParam int id, @RequestBody Genre genre) {
-//		return playlistService.updateGenre(id, genre);
-//	}
-//
-//	@DeleteMapping(path = "/playlist")
-//	public @ResponseBody ResponseEntity<Object> deleteGenre(@RequestParam int id) {
-//		return playlistService.deleteGenre(id);
-//	}
 
 }

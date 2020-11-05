@@ -2,6 +2,9 @@ package com.tma.musicManagement.testModel;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +14,7 @@ import com.tma.musicManagement.model.Genre;
 import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.model.Singer;
+import com.tma.musicManagement.model.User;
 import com.tma.musicManagement.service.impl.MusicServiceImpl;
 import com.tma.musicManagement.utils.Constant;
 
@@ -26,8 +30,19 @@ public class TestMusicModel {
 		music.setGenre(new Genre());
 		music.setMusician(new Musician());
 		music.setSinger(new Singer());
+		List<User> users = new ArrayList<User>();
+		User user1 = new User();
+		user1.setName("H");
+		users.add(user1);
+		music.setUsers(users);
 		music.setName("Đen");
 		music.setReleaseTime("2020-5-5");
+	}
+
+	@Test
+	public void test_MusicModel_getUserName() {
+
+		assertEquals("H", this.music.getUsers().get(0).getName());
 	}
 
 	@Test

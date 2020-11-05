@@ -9,6 +9,8 @@ public class Constant {
 	public final static String GENRE_NULL = "Genre is null";
 	public final static String MUSICIAN_NULL = "Musician is null";
 	public final static String SINGER_NULL = "Singer is null";
+	public final static String USER_NULL = "User is null";
+
 	public final static String NAME_NOT_VALID = "Name was too long or too short";
 	public final static String SEX_NOT_VALID = "Sex must be male, female or other";
 	public final static String[] SEXS = { "Male", "Female", "Other" };

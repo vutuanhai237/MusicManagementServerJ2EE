@@ -17,7 +17,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 	@Autowired
 	private PlaylistRepository playlistRepository;
 
-	public void setSingerRepository(PlaylistRepository playlistRepository) {
+	public void setPlaylistRepository(PlaylistRepository playlistRepository) {
 		this.playlistRepository = playlistRepository;
 	}
 
@@ -29,7 +29,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 	@Override
 	public ResponseEntity<Object> createPlaylist(Playlist playlist) {
 		playlistRepository.save(playlist);
-		return null;
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
