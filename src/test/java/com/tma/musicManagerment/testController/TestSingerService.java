@@ -67,6 +67,37 @@ public class TestSingerService {
 	}
 
 	@Test
+	public void test_singerController_createSingerCatch() throws URISyntaxException {
+		SingerRepository mockSingerRepository = Mockito.mock(SingerRepository.class);
+		SingerDAO singerDAO = new SingerDAO();
+		SingerServiceImpl singerService = new SingerServiceImpl();
+		SingerController singerController = new SingerController();
+		singerDAO.setSingerRepository(mockSingerRepository);
+		singerService.setSingerDAO(null);
+		singerController.setSingerService(singerService);
+
+		Mockito.when(mockSingerRepository.save(singer1)).thenReturn(singer1);
+		assertEquals("<406 Not Acceptable,Singer is not acceptable,{}>",
+				singerController.createSinger(singer1).toString());
+	}
+
+	@Test
+	public void test_singerController_updateSingerCatch() {
+		SingerRepository mockSingerRepository = Mockito.mock(SingerRepository.class);
+		SingerDAO singerDAO = new SingerDAO();
+		SingerServiceImpl singerService = new SingerServiceImpl();
+		SingerController singerController = new SingerController();
+		singerDAO.setSingerRepository(mockSingerRepository);
+		singerService.setSingerDAO(null);
+		singerController.setSingerService(singerService);
+
+		Mockito.when(mockSingerRepository.findOne(11)).thenReturn(singer1);
+		singer2.setId(11);
+		Mockito.when(mockSingerRepository.save(singer1)).thenReturn(singer1);
+		assertEquals("<404 Not Found,{}>", singerController.updateSinger(11, singer2).toString());
+	}
+
+	@Test
 	public void test_singerController_updateSinger_Valid() {
 		SingerRepository mockSingerRepository = Mockito.mock(SingerRepository.class);
 		SingerDAO singerDAO = new SingerDAO();

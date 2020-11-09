@@ -98,4 +98,43 @@ public class TestPlaylistService {
 		}
 	}
 
+	@Test
+	public void test_playlistController_createPlaylistCatch() throws URISyntaxException {
+
+		PlaylistRepository mockPlaylistRepository = Mockito.mock(PlaylistRepository.class);
+		PlaylistServiceImpl playlistService = new PlaylistServiceImpl();
+		PlaylistDAO playlistDAO = new PlaylistDAO();
+		playlistController = new PlaylistController();
+		playlistDAO.setPlaylistRepository(mockPlaylistRepository);
+		playlistService.setPlaylistDAO(null);
+		playlistController.setPlaylistService(playlistService);
+
+		try {
+
+			assertEquals("<406 Not Acceptable,Playlist is not acceptable,{}>",
+					playlistController.createPlaylist(new Playlist()).toString());
+		} catch (IllegalArgumentException e) {
+			// Expected
+		}
+	}
+
+	@Test
+	public void test_playlistController_getPlaylistCatch() throws URISyntaxException {
+
+		PlaylistRepository mockPlaylistRepository = Mockito.mock(PlaylistRepository.class);
+		PlaylistServiceImpl playlistService = new PlaylistServiceImpl();
+		PlaylistDAO playlistDAO = new PlaylistDAO();
+		playlistController = new PlaylistController();
+		playlistDAO.setPlaylistRepository(mockPlaylistRepository);
+		playlistService.setPlaylistDAO(null);
+		playlistController.setPlaylistService(playlistService);
+
+		try {
+
+			assertEquals(null, playlistController.getPlaylists());
+		} catch (IllegalArgumentException e) {
+			// Expected
+		}
+	}
+
 }

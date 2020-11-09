@@ -66,6 +66,25 @@ public class TestGenreService {
 	}
 
 	@Test
+	public void test_GenreController_createGenreCatch() throws URISyntaxException {
+		Genre genre = new Genre();
+		genre.setId(10);
+		genre.setName("AAA");
+
+		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
+		GenreServiceImpl genreService = new GenreServiceImpl();
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(null);
+		genreController = new GenreController();
+		genreController.setGenreService(genreService);
+
+		Mockito.when(mockGenreRepository.save(genre)).thenReturn(genre);
+
+		assertEquals("<406 Not Acceptable,Genre is not acceptable,{}>", genreController.createGenre(genre).toString());
+	}
+
+	@Test
 	public void test_GenreController_createGenre_notValid() throws URISyntaxException {
 		Genre genre = new Genre();
 		genre.setId(10);
@@ -105,6 +124,30 @@ public class TestGenreService {
 		genre1.setId(11);
 		Mockito.when(mockGenreRepository.save(genre1)).thenReturn(genre1);
 		assertEquals("<406 Not Acceptable,Genre is not valid,{}>", genreController.updateGenre(11, genre1).toString());
+	}
+
+	@Test
+	public void test_GenreController_updateGenreCatch() {
+		Genre genre1 = new Genre();
+		genre1.setName("A");
+		genre1.setId(10);
+		Genre genre2 = new Genre();
+		genre2.setName("B");
+		genre2.setId(11);
+
+		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
+		GenreServiceImpl genreService = new GenreServiceImpl();
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(null);
+		genreController = new GenreController();
+		genreController.setGenreService(genreService);
+
+		Mockito.when(mockGenreRepository.findOne(11)).thenReturn(genre2);
+		genre1.setId(11);
+		Mockito.when(mockGenreRepository.save(genre1)).thenReturn(genre1);
+		assertEquals("<406 Not Acceptable,ID or genre is not acceptable,{}>",
+				genreController.updateGenre(11, genre1).toString());
 	}
 
 	@Test
