@@ -16,7 +16,5 @@ public interface PlaylistService {
 
 	public Iterable<Playlist> getPlaylists();
 
-	public void deletePlaylist(Playlist playlist);
-
 	public void deletePlaylistByID(int uid, int mid);
 }

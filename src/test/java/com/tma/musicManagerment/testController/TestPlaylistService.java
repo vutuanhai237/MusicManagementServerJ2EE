@@ -65,4 +65,37 @@ public class TestPlaylistService {
 		assertEquals("<204 No Content,{}>", playlistController.createPlaylist(playlist1).toString());
 	}
 
+	@Test
+	public void test_playlistController_getPlaylistByUid() throws URISyntaxException {
+
+		PlaylistRepository mockPlaylistRepository = Mockito.mock(PlaylistRepository.class);
+		PlaylistServiceImpl playlistService = new PlaylistServiceImpl();
+		PlaylistDAO playlistDAO = new PlaylistDAO();
+		playlistController = new PlaylistController();
+		playlistDAO.setPlaylistRepository(mockPlaylistRepository);
+		playlistService.setPlaylistDAO(playlistDAO);
+		playlistController.setPlaylistService(playlistService);
+		assertEquals("[]", playlistController.getPlaylistByUId(1).toString());
+	}
+
+	@Test
+	public void test_playlistController_deleteByTwoId() throws URISyntaxException {
+
+		PlaylistRepository mockPlaylistRepository = Mockito.mock(PlaylistRepository.class);
+		PlaylistServiceImpl playlistService = new PlaylistServiceImpl();
+		PlaylistDAO playlistDAO = new PlaylistDAO();
+		playlistController = new PlaylistController();
+		playlistDAO.setPlaylistRepository(mockPlaylistRepository);
+		playlistService.setPlaylistDAO(playlistDAO);
+		playlistController.setPlaylistService(playlistService);
+
+		Mockito.doThrow(new IllegalArgumentException()).when(mockPlaylistRepository).deleteByTwoID(1, 1);
+		try {
+			playlistController.deletePlaylistByTwoId(1, 1);
+
+		} catch (IllegalArgumentException e) {
+			// Expected
+		}
+	}
+
 }

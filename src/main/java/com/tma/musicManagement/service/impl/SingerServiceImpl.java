@@ -1,75 +1,115 @@
 package com.tma.musicManagement.service.impl;
 
-import java.util.Arrays;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.tma.musicManagement.dao.SingerDAO;
 import com.tma.musicManagement.model.Singer;
-import com.tma.musicManagement.repository.SingerRepository;
 import com.tma.musicManagement.service.SingerService;
 import com.tma.musicManagement.utils.Constant;
 
 @Service
 @Primary
 public class SingerServiceImpl implements SingerService {
-	@Autowired
-	private SingerRepository singerRepository;
 
-	public void setSingerRepository(SingerRepository singerRepository) {
-		this.singerRepository = singerRepository;
+	@Autowired
+	private SingerDAO singerDAO;
+	private static Logger LOGGER = LogManager.getLogger(MusicianServiceImpl.class);
+
+	public void setSingerDAO(SingerDAO singerDAO) {
+		this.singerDAO = singerDAO;
 	}
 
 	@Override
 	public Iterable<Singer> getSingers() {
-		return singerRepository.findAll();
+		return singerDAO.getSingers();
 	}
 
 	@Override
 	public ResponseEntity<Object> updateSinger(int id, Singer singer) {
-		Singer singerOptional = singerRepository.findOne(id);
-		if (singerOptional == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			Singer singerOptional = this.getSingerById(id);
+			if (singerOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
+			singer.setId(id);
+			return this.createSinger(singer);
+		} catch (Exception e) {
+			String message = "Id singer or singer is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
 		}
-		singer.setId(id);
-		singerRepository.save(singer);
-		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<Object> createSinger(Singer singer) {
-		Singer savedSinger = singerRepository.save(singer);
-		return ResponseEntity.noContent().build();
+		try {
+			String message = this.check(singer);
+			if (message == Constant.VALID) {
+				singerDAO.createSinger(singer);
+				return ResponseEntity.noContent().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+			}
+		} catch (Exception e) {
+			String message = "Singer is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
+		}
 	}
 
 	@Override
 	public ResponseEntity<Object> deleteSinger(int id) {
-		Singer singerOptional = singerRepository.findOne(id);
-		if (singerOptional == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			Singer singerOptional = this.getSingerById(id);
+			if (singerOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
+			singerDAO.deleteSingerById(id);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			String message = "Id singer is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
 		}
-		singerRepository.delete(id);
-		return ResponseEntity.noContent().build();
+
 	}
 
-	public static String check(Singer singer) throws Exception {
+	public String check(Singer singer) throws Exception {
 		try {
 			if (singer.getName().length() < 1 || singer.getName().length() > 50) {
 				return Constant.NAME_NOT_VALID;
-			} else if (Arrays.stream(Constant.SEXS).anyMatch(singer.getSex()::equals) == false) {
+			} else if (!singer.getSex().equals(Constant.SEXS.Female.toString())
+					&& !singer.getSex().equals(Constant.SEXS.Male.toString())
+					&& !singer.getSex().equals(Constant.SEXS.Other.toString())) {
+
 				return Constant.SEX_NOT_VALID;
 			}
 			return Constant.VALID;
 		} catch (Exception e) {
-			return Constant.MUSICIAN_NULL;
+			throw new Exception(Constant.MUSICIAN_NULL);
 		}
 
 	}
 
 	@Override
 	public Singer getSingerById(int id) {
-		return singerRepository.findOne(id);
+		try {
+			return singerDAO.getSingerById(id);
+		} catch (Exception e) {
+			String message = "Id singer is not acceptable";
+			LOGGER.error(message);
+			return null;
+
+		}
+
 	}
 }

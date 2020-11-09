@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tma.musicManagement.controller.UserController;
+import com.tma.musicManagement.dao.UserDAO;
 import com.tma.musicManagement.model.User;
 import com.tma.musicManagement.repository.UserRepository;
 import com.tma.musicManagement.service.impl.UserServiceImpl;
@@ -35,7 +36,10 @@ public class TestUserService {
 		UserRepository mockUserRepository = Mockito.mock(UserRepository.class);
 		Mockito.when(mockUserRepository.findOne(1)).thenReturn(null);
 		UserServiceImpl userService = new UserServiceImpl();
-		userService.setUserRepository(mockUserRepository);
+		UserDAO userDAO = new UserDAO();
+
+		userDAO.setUserRepository(mockUserRepository);
+		userService.setUserDAO(userDAO);
 		userController = new UserController();
 		userController.setUserService(userService);
 		assertEquals(null, userController.getUserById(1));

@@ -1,7 +1,7 @@
 package com.tma.musicManagement.service.impl;
 
-import java.util.Arrays;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import com.tma.musicManagement.utils.Constant;
 public class MusicianServiceImpl implements MusicianService {
 	@Autowired
 	private MusicianDAO musicianDAO;
+	private static Logger LOGGER = LogManager.getLogger(MusicianServiceImpl.class);
 
 	public void setMusicianDAO(MusicianDAO musicianDAO) {
 		this.musicianDAO = musicianDAO;
@@ -30,12 +31,20 @@ public class MusicianServiceImpl implements MusicianService {
 
 	@Override
 	public ResponseEntity<Object> updateMusician(int id, Musician musician) {
-		Musician musicianOptional = musicianDAO.getMusicianById(id);
-		if (musicianOptional == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			Musician musicianOptional = musicianDAO.getMusicianById(id);
+			if (musicianOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
+			musician.setId(id);
+			return this.createMusician(musician);
+		} catch (Exception e) {
+			String message = "ID or musician is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
 		}
-		musician.setId(id);
-		return this.createMusician(musician);
+
 	}
 
 	@Override
@@ -49,20 +58,39 @@ public class MusicianServiceImpl implements MusicianService {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 			}
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
+			String message = "Musician is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
 		}
 	}
 
 	@Override
 	public ResponseEntity<Object> deleteMusician(int id) {
-		return musicianDAO.deleteMusicianById(id);
+		try {
+			Musician musicianOptional = musicianDAO.getMusicianById(id);
+			if (musicianOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
+			musicianDAO.deleteMusicianById(id);
+			return ResponseEntity.noContent().build();
+
+		} catch (Exception e) {
+			String message = "ID musician is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
+		}
+
 	}
 
 	public String check(Musician musician) throws Exception {
 		try {
 			if (musician.getName().length() < 1 || musician.getName().length() > 50) {
 				return Constant.NAME_NOT_VALID;
-			} else if (Arrays.stream(Constant.SEXS).anyMatch(musician.getSex()::equals) == false) {
+			} else if (!musician.getSex().equals(Constant.SEXS.Female.toString())
+					&& !musician.getSex().equals(Constant.SEXS.Male.toString())
+					&& !musician.getSex().equals(Constant.SEXS.Other.toString())) {
 				return Constant.SEX_NOT_VALID;
 			}
 			return Constant.VALID;

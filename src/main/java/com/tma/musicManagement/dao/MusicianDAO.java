@@ -24,29 +24,12 @@ public class MusicianDAO {
 		return musicianRepository.findOne(id);
 	}
 
-	public ResponseEntity<Object> updateMusician(int id, Musician musician) {
-		Musician genreOptional = musicianRepository.findOne(id);
-		if (genreOptional == null) {
-			System.out.print("1\n");
-			return ResponseEntity.notFound().build();
-		}
-		musician.setId(id);
+	public ResponseEntity<Object> createMusician(Musician musician) {
 		musicianRepository.save(musician);
 		return ResponseEntity.noContent().build();
 	}
 
-	public ResponseEntity<Object> createMusician(Musician musician) {
-		Musician savedMusician = musicianRepository.save(musician);
-		return ResponseEntity.noContent().build();
-	}
-
-	public ResponseEntity<Object> deleteMusicianById(int id) {
-		Musician musicianOptional = musicianRepository.findOne(id);
-		if (musicianOptional == null) {
-			return ResponseEntity.notFound().build();
-		}
+	public void deleteMusicianById(int id) {
 		musicianRepository.delete(id);
-		return ResponseEntity.noContent().build();
-
 	}
 }

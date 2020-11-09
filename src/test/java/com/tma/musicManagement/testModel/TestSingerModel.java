@@ -15,10 +15,12 @@ import com.tma.musicManagement.utils.Constant;
 public class TestSingerModel {
 
 	Singer singer;
+	SingerServiceImpl singerServiceImpl;
 
 	@Before
 	public void initTest() {
 		singer = new Singer();
+		singerServiceImpl = new SingerServiceImpl();
 		singer.setId(1);
 		singer.setName("Hoài Linh");
 		singer.setSex("Male");
@@ -52,26 +54,26 @@ public class TestSingerModel {
 
 	@Test
 	public void test_MusicianModel_check_Valid() throws Exception {
-		assertEquals(Constant.VALID, SingerServiceImpl.check(this.singer));
+		assertEquals(Constant.VALID, singerServiceImpl.check(this.singer));
 	}
 
 	@Test
 	public void test_MusicianModel_check_NameNotValid1() throws Exception {
 		this.singer.setName("");
-		assertEquals(Constant.NAME_NOT_VALID, SingerServiceImpl.check(this.singer));
+		assertEquals(Constant.NAME_NOT_VALID, singerServiceImpl.check(this.singer));
 	}
 
 	@Test
 	public void test_MusicianModel_check_NameNotValid2() throws Exception {
 		this.singer.setName(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(Constant.NAME_NOT_VALID, SingerServiceImpl.check(this.singer));
+		assertEquals(Constant.NAME_NOT_VALID, singerServiceImpl.check(this.singer));
 	}
 
 	@Test
 	public void test_MusicianModel_check_SexNotValid() throws Exception {
 		this.singer.setSex("Fe");
-		assertEquals(Constant.SEX_NOT_VALID, SingerServiceImpl.check(this.singer));
+		assertEquals(Constant.SEX_NOT_VALID, singerServiceImpl.check(this.singer));
 
 	}
 
@@ -79,7 +81,7 @@ public class TestSingerModel {
 	public void test_MusicianModel_check_null() throws Exception {
 		try {
 			this.singer.setName(null);
-			SingerServiceImpl.check(this.singer);
+			singerServiceImpl.check(this.singer);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), Constant.MUSICIAN_NULL);
 

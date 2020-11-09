@@ -1,5 +1,7 @@
 package com.tma.musicManagement.service.impl;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import com.tma.musicManagement.utils.Constant;
 public class GenreServiceImpl implements GenreService {
 	@Autowired
 	private GenreDAO genreDAO;
+	private static Logger LOGGER = LogManager.getLogger(GenreServiceImpl.class);
 
 	public void setGenreDAO(GenreDAO genreDAO) {
 		this.genreDAO = genreDAO;
@@ -28,12 +31,19 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public ResponseEntity<Object> updateGenre(int id, Genre genre) {
-		Genre genreOptional = genreDAO.getGenreById(id);
-		if (genreOptional == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			Genre genreOptional = genreDAO.getGenreById(id);
+			if (genreOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
+			genre.setId(id);
+			return this.createGenre(genre);
+		} catch (Exception e) {
+			String message = "ID or genre is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 		}
-		genre.setId(id);
-		return this.createGenre(genre);
+
 	}
 
 	@Override
@@ -47,19 +57,28 @@ public class GenreServiceImpl implements GenreService {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 			}
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
+			String message = "Genre is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 		}
 	}
 
 	@Override
 	public ResponseEntity<Object> deleteGenre(int id) {
-		Genre genreOptional = genreDAO.getGenreById(id);
-		if (genreOptional == null) {
-			return ResponseEntity.notFound().build();
-		}
+		try {
+			Genre genreOptional = genreDAO.getGenreById(id);
+			if (genreOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
 
-		genreDAO.deleteById(id);
-		return ResponseEntity.noContent().build();
+			genreDAO.deleteById(id);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			String message = "ID genre is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
+		}
 
 	}
 

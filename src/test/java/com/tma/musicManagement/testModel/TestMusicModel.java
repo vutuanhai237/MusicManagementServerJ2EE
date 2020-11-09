@@ -15,7 +15,10 @@ import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.model.Singer;
 import com.tma.musicManagement.model.User;
+import com.tma.musicManagement.service.impl.GenreServiceImpl;
 import com.tma.musicManagement.service.impl.MusicServiceImpl;
+import com.tma.musicManagement.service.impl.MusicianServiceImpl;
+import com.tma.musicManagement.service.impl.SingerServiceImpl;
 import com.tma.musicManagement.utils.Constant;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -97,6 +100,13 @@ public class TestMusicModel {
 		try {
 			music.getGenre().setName("Ca");
 			music.setMusician(null);
+
+			GenreServiceImpl genreServiceImpl = new GenreServiceImpl();
+			SingerServiceImpl singerServiceImpl = new SingerServiceImpl();
+			MusicianServiceImpl musicianServiceImpl = new MusicianServiceImpl();
+			musicServiceImpl.setGenreService(genreServiceImpl);
+			musicServiceImpl.setMusicianService(musicianServiceImpl);
+			musicServiceImpl.setSingerService(singerServiceImpl);
 			musicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.MUSICIAN_NULL, e.getMessage());
@@ -111,6 +121,12 @@ public class TestMusicModel {
 			music.getMusician().setName("Ca");
 			music.getMusician().setSex("Male");
 			music.setSinger(null);
+			GenreServiceImpl genreServiceImpl = new GenreServiceImpl();
+			SingerServiceImpl singerServiceImpl = new SingerServiceImpl();
+			MusicianServiceImpl musicianServiceImpl = new MusicianServiceImpl();
+			musicServiceImpl.setGenreService(genreServiceImpl);
+			musicServiceImpl.setMusicianService(musicianServiceImpl);
+			musicServiceImpl.setSingerService(singerServiceImpl);
 			musicServiceImpl.check(this.music);
 		} catch (Exception e) {
 			assertEquals(Constant.SINGER_NULL, e.getMessage());

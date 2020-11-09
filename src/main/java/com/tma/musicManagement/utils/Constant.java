@@ -1,6 +1,11 @@
 package com.tma.musicManagement.utils;
 
 public class Constant {
+
+	public static enum SEXS {
+		Male, Female, Other,
+	}
+
 	public final static String SUCCESS = "Success";
 	public final static String NOT_SUCCESS = "Not success";
 	public final static String VALID = "Valid";
@@ -13,5 +18,5 @@ public class Constant {
 
 	public final static String NAME_NOT_VALID = "Name was too long or too short";
 	public final static String SEX_NOT_VALID = "Sex must be male, female or other";
-	public final static String[] SEXS = { "Male", "Female", "Other" };
+
 }

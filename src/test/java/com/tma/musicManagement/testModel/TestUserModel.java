@@ -7,7 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.tma.musicManagement.dao.UserDAO;
 import com.tma.musicManagement.model.User;
+import com.tma.musicManagement.repository.UserRepository;
 import com.tma.musicManagement.service.impl.UserServiceImpl;
 import com.tma.musicManagement.utils.Constant;
 
@@ -15,9 +17,15 @@ import com.tma.musicManagement.utils.Constant;
 public class TestUserModel {
 
 	User user;
+	UserServiceImpl userServiceImpl;
+	UserRepository userRepository;
 
 	@Before
 	public void initTest() {
+		userServiceImpl = new UserServiceImpl();
+		UserDAO userDAO = new UserDAO();
+		userDAO.setUserRepository(userRepository);
+		userServiceImpl.setUserDAO(userDAO);
 		user = new User();
 		user.setId(1);
 		user.setName("Hoài Linh");
@@ -52,27 +60,27 @@ public class TestUserModel {
 
 	@Test
 	public void test_MusicianModel_check_Valid() throws Exception {
-		assertEquals(Constant.VALID, UserServiceImpl.check(this.user));
+		assertEquals(Constant.VALID, userServiceImpl.check(this.user));
 	}
 
 	@Test
 	public void test_UserModel_check_NameNotValid1() throws Exception {
 		this.user.setName("");
-		assertEquals(Constant.NAME_NOT_VALID, UserServiceImpl.check(this.user));
+		assertEquals(Constant.NAME_NOT_VALID, userServiceImpl.check(this.user));
 	}
 
 	@Test
 	public void test_UserModel_check_NameNotValid2() throws Exception {
 		this.user.setName(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(Constant.NAME_NOT_VALID, UserServiceImpl.check(this.user));
+		assertEquals(Constant.NAME_NOT_VALID, userServiceImpl.check(this.user));
 	}
 
 	@Test
 	public void test_UserModel_check_null() throws Exception {
 		try {
 			this.user.setName(null);
-			UserServiceImpl.check(this.user);
+			userServiceImpl.check(this.user);
 		} catch (Exception e) {
 			assertEquals(e.getMessage(), Constant.USER_NULL);
 

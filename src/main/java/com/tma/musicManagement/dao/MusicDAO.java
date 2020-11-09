@@ -14,7 +14,7 @@ public class MusicDAO {
 	@Autowired
 	private MusicRepository musicRepository;
 
-	public void setMusicRepository(MusicRepository mockMusicRepository) {
+	public void setMusicRepository(MusicRepository musicRepository) {
 		this.musicRepository = musicRepository;
 	}
 

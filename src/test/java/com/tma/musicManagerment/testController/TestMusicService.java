@@ -18,7 +18,10 @@ import com.tma.musicManagement.model.Music;
 import com.tma.musicManagement.model.Musician;
 import com.tma.musicManagement.model.Singer;
 import com.tma.musicManagement.repository.MusicRepository;
+import com.tma.musicManagement.service.impl.GenreServiceImpl;
 import com.tma.musicManagement.service.impl.MusicServiceImpl;
+import com.tma.musicManagement.service.impl.MusicianServiceImpl;
+import com.tma.musicManagement.service.impl.SingerServiceImpl;
 import com.tma.musicManagement.utils.Helper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -64,17 +67,23 @@ public class TestMusicService {
 	public void test_musicController_createMusic() throws URISyntaxException {
 
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
-		MusicServiceImpl musicService = new MusicServiceImpl();
+		Mockito.when(mockMusicRepository.save(music1)).thenReturn(music1);
+		MusicServiceImpl musicServiceImpl = new MusicServiceImpl();
+		GenreServiceImpl genreServiceImpl = new GenreServiceImpl();
+		SingerServiceImpl singerServiceImpl = new SingerServiceImpl();
+		MusicianServiceImpl musicianServiceImpl = new MusicianServiceImpl();
+
 		MusicDAO musicDAO = new MusicDAO();
 		musicController = new MusicController();
 		musicDAO.setMusicRepository(mockMusicRepository);
-		musicService.setMusicDAO(musicDAO);
-		musicController.setMusicService(musicService);
-		Mockito.when(mockMusicRepository.save(music1)).thenReturn(music1);
+		musicServiceImpl.setMusicDAO(musicDAO);
+		musicServiceImpl.setGenreService(genreServiceImpl);
+		musicServiceImpl.setMusicianService(musicianServiceImpl);
+		musicServiceImpl.setSingerService(singerServiceImpl);
+		musicController.setMusicService(musicServiceImpl);
 		try {
-			assertEquals("<204 No Content,{}>", musicController.createMusic(music1).toString());
+			assertEquals("<406 Not Acceptable,Genre is not valid,{}>", musicController.createMusic(music1).toString());
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 	}
@@ -126,7 +135,7 @@ public class TestMusicService {
 	}
 
 	@Test
-	public void test_GenreController_deleteMusic_NotValid() throws Exception {
+	public void test_musicController_deleteMusic_NotValid() throws Exception {
 		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
 		MusicServiceImpl musicService = new MusicServiceImpl();
 		MusicDAO musicDAO = new MusicDAO();
@@ -138,4 +147,75 @@ public class TestMusicService {
 		assertEquals("<404 Not Found,{}>", musicController.deleteMusic(10).toString());
 	}
 
+	@Test
+	public void test_musicController_getGenreQuantites() throws Exception {
+		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
+		MusicServiceImpl musicService = new MusicServiceImpl();
+		MusicDAO musicDAO = new MusicDAO();
+		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
+		musicController.setMusicService(musicService);
+
+		Genre genre1 = new Genre();
+		genre1.setId(1);
+		genre1.setName("Hai");
+		Genre genre2 = new Genre();
+		genre2.setId(2);
+		genre2.setName("Hai2");
+
+		Mockito.when(mockMusicRepository.getGenreQuantities()).thenReturn(null);
+		assertEquals(null, musicController.getGenreQuantities());
+	}
+
+	@Test
+	public void test_musicController_getMusicianQuantites() throws Exception {
+		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
+		MusicServiceImpl musicService = new MusicServiceImpl();
+		MusicDAO musicDAO = new MusicDAO();
+		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
+		musicController.setMusicService(musicService);
+
+		Genre genre1 = new Genre();
+		genre1.setId(1);
+		genre1.setName("Hai");
+		Genre genre2 = new Genre();
+		genre2.setId(2);
+		genre2.setName("Hai2");
+
+		Mockito.when(mockMusicRepository.getMusicianQuantities()).thenReturn(null);
+		assertEquals(null, musicController.getMusicianQuantities());
+	}
+
+	@Test
+	public void test_musicController_getSingerQuantites() throws Exception {
+		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
+		MusicServiceImpl musicService = new MusicServiceImpl();
+		MusicDAO musicDAO = new MusicDAO();
+		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
+		musicController.setMusicService(musicService);
+
+		Mockito.when(mockMusicRepository.getSingerQuantities()).thenReturn(null);
+		assertEquals(null, musicController.getSingerQuantities());
+	}
+
+	@Test
+	public void test_musicController_getMusicsBySid() throws Exception {
+		MusicRepository mockMusicRepository = Mockito.mock(MusicRepository.class);
+		MusicServiceImpl musicService = new MusicServiceImpl();
+		MusicDAO musicDAO = new MusicDAO();
+		musicController = new MusicController();
+		musicDAO.setMusicRepository(mockMusicRepository);
+		musicService.setMusicDAO(musicDAO);
+		musicController.setMusicService(musicService);
+
+		Singer singer = new Singer();
+
+		Mockito.when(mockMusicRepository.getMusicsBySinger(singer)).thenReturn(null);
+		assertEquals(null, musicController.getMusicsBySid(singer));
+	}
 }

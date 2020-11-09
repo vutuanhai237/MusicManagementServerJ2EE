@@ -33,10 +33,6 @@ public class PlaylistDAO {
 		playlistRepository.delete(playlist);
 	}
 
-	public void deletePlaylistByID(int uid, int mid) {
-
-	}
-
 	public void deleteByTwoID(int uid, int mid) {
 		playlistRepository.deleteByTwoID(uid, mid);
 	}

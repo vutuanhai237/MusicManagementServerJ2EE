@@ -2,6 +2,8 @@ package com.tma.musicManagement.service.impl;
 
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,22 @@ public class MusicServiceImpl implements MusicService {
 	@Autowired
 	private MusicianServiceImpl musicianServiceImpl;
 	@Autowired
+	private SingerServiceImpl singerServiceImpl;
+	@Autowired
 	private MusicDAO musicDAO;
+	private static Logger LOGGER = LogManager.getLogger(MusicServiceImpl.class);
+
+	public void setGenreService(GenreServiceImpl genreServiceImpl) {
+		this.genreServiceImpl = genreServiceImpl;
+	}
+
+	public void setMusicianService(MusicianServiceImpl musicianServiceImpl) {
+		this.musicianServiceImpl = musicianServiceImpl;
+	}
+
+	public void setSingerService(SingerServiceImpl singerServiceImpl) {
+		this.singerServiceImpl = singerServiceImpl;
+	}
 
 	public void setMusicDAO(MusicDAO musicDAO) {
 		this.musicDAO = musicDAO;
@@ -30,20 +47,34 @@ public class MusicServiceImpl implements MusicService {
 
 	@Override
 	public Iterable<Music> getMusics() {
-		return musicDAO.getMusics();
+		try {
+			return musicDAO.getMusics();
+
+		} catch (Exception e) {
+			String message = "Database error is not acceptable";
+			LOGGER.fatal(message);
+			return null;
+		}
 
 	}
 
 	@Override
 	public ResponseEntity<Object> updateMusic(int id, Music music) {
-		Music musicOptional = musicDAO.getMusicById(id);
-		if (musicOptional == null) {
+		try {
+			Music musicOptional = musicDAO.getMusicById(id);
+			if (musicOptional == null) {
 
-			return ResponseEntity.notFound().build();
+				return ResponseEntity.notFound().build();
+			}
+			music.setId(id);
+			this.createMusic(music);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			String message = "ID or music is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 		}
-		music.setId(id);
-		this.createMusic(music);
-		return ResponseEntity.noContent().build();
+
 	}
 
 	@Override
@@ -57,23 +88,41 @@ public class MusicServiceImpl implements MusicService {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
 			}
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
+			String message = "Music is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
 		}
 	}
 
 	@Override
 	public ResponseEntity<Object> deleteMusic(int id) {
-		Music musicOptional = musicDAO.getMusicById(id);
-		if (musicOptional == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			Music musicOptional = musicDAO.getMusicById(id);
+			if (musicOptional == null) {
+				return ResponseEntity.notFound().build();
+			}
+			musicDAO.deleteMusicById(id);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			String message = "ID music is not acceptable";
+			LOGGER.error(message);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(message);
+
 		}
-		musicDAO.deleteMusicById(id);
-		return ResponseEntity.noContent().build();
+
 	}
 
 	@Override
 	public Iterable<Music> getMusicsBySinger(Singer singer) {
-		return musicDAO.getMusicsBySinger(singer);
+		try {
+			return musicDAO.getMusicsBySinger(singer);
+		} catch (Exception e) {
+			String message = "Singer is not acceptable";
+			LOGGER.error(message);
+			return null;
+		}
+
 	}
 
 	@Override
@@ -109,7 +158,7 @@ public class MusicServiceImpl implements MusicService {
 			throw new Exception(Constant.MUSICIAN_NULL);
 		}
 		try {
-			return SingerServiceImpl.check(music.getSinger());
+			return this.singerServiceImpl.check(music.getSinger());
 		} catch (Exception e) {
 			throw new Exception(Constant.SINGER_NULL);
 		}

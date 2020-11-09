@@ -50,7 +50,7 @@ public class TestGenreService {
 	public void test_GenreController_createGenre() throws URISyntaxException {
 		Genre genre = new Genre();
 		genre.setId(10);
-		genre.setName("A");
+		genre.setName("AAA");
 
 		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
 		GenreServiceImpl genreService = new GenreServiceImpl();
@@ -63,6 +63,25 @@ public class TestGenreService {
 		Mockito.when(mockGenreRepository.save(genre)).thenReturn(genre);
 
 		assertEquals("<204 No Content,{}>", genreController.createGenre(genre).toString());
+	}
+
+	@Test
+	public void test_GenreController_createGenre_notValid() throws URISyntaxException {
+		Genre genre = new Genre();
+		genre.setId(10);
+		genre.setName("A");
+
+		GenreRepository mockGenreRepository = Mockito.mock(GenreRepository.class);
+		GenreServiceImpl genreService = new GenreServiceImpl();
+		GenreDAO genreDAO = new GenreDAO();
+		genreDAO.setGenreRepository(mockGenreRepository);
+		genreService.setGenreDAO(genreDAO);
+		genreController = new GenreController();
+		genreController.setGenreService(genreService);
+
+		Mockito.when(mockGenreRepository.save(genre)).thenReturn(genre);
+
+		assertEquals("<406 Not Acceptable,Genre is not valid,{}>", genreController.createGenre(genre).toString());
 	}
 
 	@Test
@@ -85,7 +104,7 @@ public class TestGenreService {
 		Mockito.when(mockGenreRepository.findOne(11)).thenReturn(genre2);
 		genre1.setId(11);
 		Mockito.when(mockGenreRepository.save(genre1)).thenReturn(genre1);
-		assertEquals("<204 No Content,{}>", genreController.updateGenre(11, genre1).toString());
+		assertEquals("<406 Not Acceptable,Genre is not valid,{}>", genreController.updateGenre(11, genre1).toString());
 	}
 
 	@Test
